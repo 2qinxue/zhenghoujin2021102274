@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">test</string>
+    <string name="app_name">我的第一个应用</string>
+    <string name="text_view">Hello world</string>
+    <string name="Button_view">确认</string>
+    <string name="text_vciew_hellow_world">你好Android</string>
+
 </resources>
