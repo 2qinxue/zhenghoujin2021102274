@@ -1,4 +1,4 @@
-package com.jnu.student;
+package com.jnu.Mytest;
 
 import org.junit.Test;
 
