@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Mytest"
+rootProject.name = "myrecycle"
 include(":app")
  
