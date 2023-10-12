@@ -2,4 +2,5 @@
     <string name="app_name">Test Driven Development</string>
     <string name="item_name">商品名称</string>
     <string name="item_price">商品价格</string>
+    <string name="OK">OK</string>
 </resources>
