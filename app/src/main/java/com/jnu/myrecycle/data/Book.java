@@ -2,9 +2,9 @@ package com.jnu.myrecycle.data;
 
 public class Book {
 
-    public final String name;
-    public final double price;
-    public final int imageId;
+    public String name;
+    public double price;
+    public int imageId;
     public String getName() {
         return name;
     }
@@ -21,5 +21,12 @@ public class Book {
         this.name = name;
         this.price = price;
         this.imageId = imageId;
+    }
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
+    public void setPrice(double newPrice) {
+        this.price = newPrice;
     }
 }
