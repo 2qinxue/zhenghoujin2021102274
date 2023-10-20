@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".shop_item_MainActivity"
+            android:name=".BookDetailsActivity"
             android:exported="true">
 
         </activity>

@@ -7,7 +7,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.jnu.myrecycle"
+        applicationId = "com.jnu.Test"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

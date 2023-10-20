@@ -1,10 +1,12 @@
 package com.jnu.myrecycle.data;
 
-public class Book {
+import java.io.Serializable;
 
-    public String name;
-    public double price;
-    public int imageId;
+public class Book implements Serializable {
+
+    protected String name;
+    protected double price;
+    int imageId;
     public String getName() {
         return name;
     }

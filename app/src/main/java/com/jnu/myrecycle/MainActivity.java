@@ -147,7 +147,10 @@
 
 package com.jnu.myrecycle;
 import com.jnu.myrecycle.data.Book;
+import com.jnu.myrecycle.data.DataBank;
+
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -162,6 +165,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -169,7 +173,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent>itemLauncher;
     private ActivityResultLauncher<Intent>imageLauncher_new;
-    CustomAdapter adapter;
+
+    private ArrayList<Book> books =new ArrayList<>();
+    private CustomAdapter adapter;
     int position_id=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 } else
                 {
-                    Intent intent = new Intent(MainActivity.this, shop_item_MainActivity.class);
+                    Intent intent = new Intent(MainActivity.this, BookDetailsActivity.class);
                     itemLauncher.launch(intent);
                 }
             }
@@ -196,12 +202,17 @@ public class MainActivity extends AppCompatActivity {
 
         button1.setOnClickListener(buttonClickListener);
         button2.setOnClickListener(buttonClickListener);
-
-        ArrayList<Book> books =new ArrayList<>();
-        books.add(new Book("信息安全教学基础（第2版）", 100, R.drawable.book_1));
-        books.add(new Book("软件管理项目案例教程（第4版）", 120, R.drawable.book_2));
-        books.add(new Book("创新工程实践", 30, R.drawable.book_no_name));
-        books.add(new Book("油画", 1024, R.drawable.a_oil_painting));
+        try {
+            books = new DataBank().booksInput(this);
+        } catch (Exception e) {
+            new DataBank().saveBooks(this.getApplicationContext(),books);
+        }
+        if(books.size()==0) {
+            books.add(new Book("信息安全教学基础（第2版）", 100, R.drawable.book_1));
+            books.add(new Book("软件管理项目案例教程（第4版）", 120, R.drawable.book_2));
+            books.add(new Book("创新工程实践", 30, R.drawable.book_no_name));
+            books.add(new Book("油画", 1024, R.drawable.a_oil_painting));
+        }  //添加书本
         adapter = new CustomAdapter(books);
         recyclerView.setAdapter(adapter);
         registerForContextMenu(recyclerView);
@@ -220,13 +231,14 @@ public class MainActivity extends AppCompatActivity {
                             price=0.0;   // 输入的数据不是 double 类型
                         }
                         int position = data.getIntExtra("image_id", 0);
-                        books.add(new Book(name, price, books.get(position).getImageId()));
+                        books.add(new Book(name, price,R.drawable.book_no_name));
                         adapter.notifyItemInserted(books.size());
+                        new DataBank().saveBooks(this.getApplicationContext(),books);
                     }
                     else if (result.getResultCode() == RESULT_CANCELED) {
                         Toast.makeText(MainActivity.this, "哈哈哈哈哈哈哈哈哈", Toast.LENGTH_SHORT).show();
                     }
-                });
+                });  //添加界面
         imageLauncher_new = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -242,28 +254,46 @@ public class MainActivity extends AppCompatActivity {
                             new_price = 0.0;   // 输入的数据不是 double 类型
                         }
                         adapter.editItem(position_id, new_name, new_price);
+                        new DataBank().saveBooks(this.getApplicationContext(),books);
                     }
                     else if (result.getResultCode() == RESULT_CANCELED) {
                         Toast.makeText(MainActivity.this, "哈哈", Toast.LENGTH_SHORT).show();
-                    }}
-        );
+                    }
+                });
     }
 
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
             case 0:
-                int position = item.getOrder();
-                adapter.removeItem(position);
-                Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder =new AlertDialog.Builder(this);
+                builder.setTitle("删除");
+                builder.setMessage("确定删除？");
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                int position = item.getOrder();
+                                adapter.removeItem(position);
+                                new DataBank().saveBooks(MainActivity.this.getApplicationContext(),books);
+                                Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.show();
                 break;
             case 1:
                 Intent intent = new Intent(MainActivity.this,
-                        shop_item_MainActivity.class);
+                        BookDetailsActivity.class);
                 itemLauncher.launch(intent);
                 break;
             case 2:
                 position_id = item.getOrder();
                 Intent intent1 = new Intent(MainActivity.this, modifyActivity.class);
+                intent1.putExtra("old_name", books.get(position_id).getName());
+                intent1.putExtra("old_price", books.get(position_id).getPrice());
                 imageLauncher_new.launch(intent1);
                 Toast.makeText(MainActivity.this, "商品"+item.getOrder() +"修改", Toast.LENGTH_SHORT).show();
                 break;

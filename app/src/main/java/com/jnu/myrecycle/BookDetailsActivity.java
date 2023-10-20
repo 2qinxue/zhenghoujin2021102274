@@ -53,13 +53,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.icu.text.Transliterator;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -72,7 +67,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.jnu.myrecycle.data.Book;
 import java.util.ArrayList;
 
-public class shop_item_MainActivity extends AppCompatActivity {
+public class BookDetailsActivity extends AppCompatActivity {
     int id_item =0;
 
     @Override
@@ -92,7 +87,7 @@ public class shop_item_MainActivity extends AppCompatActivity {
                 intent.putExtra("name", "【" + editText.getText().toString() + "】");
                 intent.putExtra("price", editText2.getText().toString() );
                 setResult(Activity.RESULT_OK, intent);
-                shop_item_MainActivity.this.finish();
+                BookDetailsActivity.this.finish();
             }
         });
 
