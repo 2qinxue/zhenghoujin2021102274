@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class modifyActivity extends AppCompatActivity {
+public class ModifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +26,13 @@ public class modifyActivity extends AppCompatActivity {
                 intent.putExtra("new_name", editText.getText().toString());
                 intent.putExtra("new_price", editText2.getText().toString());
                 setResult(Activity.RESULT_OK, intent);
-                modifyActivity.this.finish();
+                ModifyActivity.this.finish();
             }
         });
         Button button_Cancel = findViewById(R.id.chancel);
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                modifyActivity.this.finish();
+                ModifyActivity.this.finish();
             }
         });
     }

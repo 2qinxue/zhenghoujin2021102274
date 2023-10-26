@@ -104,7 +104,7 @@ public class BookDetailsActivity extends AppCompatActivity {
             @NonNull
             @Override
             public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_item_row, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_main, parent, false);
                 return new CustomViewHolder(view);
             }
             @Override
@@ -113,6 +113,8 @@ public class BookDetailsActivity extends AppCompatActivity {
                 holder.getItemPrice().setText(books.get(position).getPrice()+"元");
                 holder.getItemImage().setImageResource(books.get(position).getImageId());
             }
+
+
 
             @Override
             public int getItemCount() {return books.size();}
@@ -123,9 +125,9 @@ public class BookDetailsActivity extends AppCompatActivity {
 
                 public CustomViewHolder(@NonNull View itemView) {
                     super(itemView);
-                    itemName = itemView.findViewById(id.item_name);
-                    item_price = itemView.findViewById(id.item_price);
-                    item_image = itemView.findViewById(id.image_view_book_cover);
+                    itemName = itemView.findViewById(id.name_add);
+                    item_price = itemView.findViewById(id.price_add);
+                    item_image = itemView.findViewById(id.image_add);
                     itemView.setOnClickListener(this);
                 }
                 public TextView getItemName() {
