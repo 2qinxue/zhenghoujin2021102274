@@ -1,5 +1,8 @@
 package com.jnu.myrecycle.taskdata;
 
+import static com.jnu.myrecycle.data.DataBankTask.FINISH_TASK_DATA_FILE_NAME;
+import static com.jnu.myrecycle.data.DataBankTask.INSTANCE_TASK_filename;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -60,14 +63,14 @@ public class instanceFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_taskdaily, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycle_view_task);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        tasks.add(new Task("普通阅读30分钟", "+30", "0/30"));
-        tasks.add(new Task("专业阅读30分钟）", "+100", "0/100"));
-        tasks.add(new Task("Keep 课程一次", "+120", "0/120"));
-        tasks.add(new Task("深蹲一套 ", "+2", "0/1"));
-        tasks.add(new Task("学习视频30分钟", "+30", "0/30"));
-        tasks.add(new Task("早睡", "+5", "0/1"));
-        tasks.add(new Task("背10个单词", "+10", "0/10"));
-        tasks.add(new Task("跑步30分钟", "+30", "0/30"));
+        tasks.add(new Task("编程30分钟", "+30", "0/30"));
+        tasks.add(new Task("刷题100道", "+100", "0/100"));
+        tasks.add(new Task("完成百度之星题目一道", "+120", "0/120"));
+        tasks.add(new Task("做两个引体向上 ", "+2", "0/1"));
+        tasks.add(new Task("英语听力30分钟", "+30", "0/30"));
+        tasks.add(new Task("健康饮食一天", "+5", "0/1"));
+        tasks.add(new Task("看30分钟名著", "+10", "0/10"));
+        tasks.add(new Task("写一篇读书笔记", "+30", "0/30"));
         adapter = new InstanceCustomAdapter(tasks);
         recyclerView.setAdapter(adapter);
         return rootView;
@@ -84,7 +87,7 @@ public class instanceFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = item.getOrder();
                         adapter.removeItem(position);
-                        new DataBankTask().saveTasks(requireActivity(), tasks);
+                        new DataBankTask().saveTasks(requireActivity(), tasks,INSTANCE_TASK_filename);
                         Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -98,9 +101,11 @@ public class instanceFragment extends Fragment {
             }
             case 1:
             {
-
+                new DataBankTask().saveTasks(requireActivity(), tasks,FINISH_TASK_DATA_FILE_NAME);
+                adapter.removeItem(item.getOrder());
+                new DataBankTask().saveTasks(requireActivity(), tasks,INSTANCE_TASK_filename);
+                Toast.makeText(getContext(), "已完成", Toast.LENGTH_SHORT).show();
             }
-
 
             default:
                 return super.onContextItemSelected(item);

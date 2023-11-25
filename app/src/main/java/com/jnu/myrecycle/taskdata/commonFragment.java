@@ -1,5 +1,8 @@
 package com.jnu.myrecycle.taskdata;
 
+import static com.jnu.myrecycle.data.DataBankTask.COMMON_TASK_FILE_NAME;
+import static com.jnu.myrecycle.data.DataBankTask.FINISH_TASK_DATA_FILE_NAME;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -56,14 +59,14 @@ public class commonFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_taskdaily, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycle_view_task);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        tasks.add(new Task("普通阅读30分钟", "+30", "0/30"));
-        tasks.add(new Task("专业阅读30分钟）", "+100", "0/100"));
-        tasks.add(new Task("Keep 课程一次", "+120", "0/120"));
-        tasks.add(new Task("深蹲一套 ", "+2", "0/1"));
-        tasks.add(new Task("学习视频30分钟", "+30", "0/30"));
-        tasks.add(new Task("早睡", "+5", "0/1"));
-        tasks.add(new Task("背10个单词", "+10", "0/10"));
-        tasks.add(new Task("跑步30分钟", "+30", "0/30"));
+        tasks.add(new Task("外出散步30分钟", "+30", "0/30"));
+        tasks.add(new Task("做家务30分钟）", "+100", "0/100"));
+        tasks.add(new Task("学习一次", "+120", "0/120"));
+        tasks.add(new Task("眼保健操一次", "+2", "0/1"));
+        tasks.add(new Task("复习30分钟", "+30", "0/30"));
+        tasks.add(new Task("完成作业", "+5", "0/1"));
+        tasks.add(new Task("做10次俯卧撑", "+10", "0/10"));
+        tasks.add(new Task("英语阅读30分钟", "+30", "0/30"));
         adapter = new CommonCustomAdapter(tasks);
         recyclerView.setAdapter(adapter);
         return rootView;
@@ -80,7 +83,7 @@ public class commonFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = item.getOrder();
                         adapter.removeItem(position);
-                        new DataBankTask().saveTasks(requireActivity(), tasks);
+                        new DataBankTask().saveTasks(requireActivity(), tasks,COMMON_TASK_FILE_NAME);
                         Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -94,6 +97,10 @@ public class commonFragment extends Fragment {
             }
             case 1:
             {
+                new DataBankTask().saveTasks(requireActivity(), tasks,FINISH_TASK_DATA_FILE_NAME);
+                adapter.removeItem(item.getOrder());
+                new DataBankTask().saveTasks(requireActivity(), tasks,COMMON_TASK_FILE_NAME);
+                Toast.makeText(getContext(), "已完成", Toast.LENGTH_SHORT).show();
 
             }
 

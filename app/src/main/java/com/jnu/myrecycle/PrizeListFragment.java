@@ -1,5 +1,8 @@
 package com.jnu.myrecycle;
 
+import static com.jnu.myrecycle.data.DataBankPrize.PRIZE_DATA_FILE_NAME;
+import static com.jnu.myrecycle.data.DataBankTask.FINISH_TASK_DATA_FILE_NAME;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -56,7 +59,6 @@ public class PrizeListFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_prize, container, false);
         RecyclerView recycle_view = rootview.findViewById(R.id.recycle_view_prize);
         recycle_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         prizes.add(new Prize("游戏30分钟", "-30", "0/30"));
         prizes.add(new Prize("专业阅读30分钟）", "-100", "0/100"));
         prizes.add(new Prize("Keep 课程一次", "-120", "0/120"));
@@ -70,6 +72,8 @@ public class PrizeListFragment extends Fragment {
         return rootview;
     }
 
+
+
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case 0: {
@@ -81,7 +85,7 @@ public class PrizeListFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = item.getOrder();
                         adapter.removeItem(position);
-                        new DataBankPrize().savePrizes(requireActivity(), prizes);
+                        new DataBankPrize().savePrizes(requireActivity(), prizes,PRIZE_DATA_FILE_NAME);
                         Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -95,7 +99,9 @@ public class PrizeListFragment extends Fragment {
             }
             case 1:
             {
-
+                new DataBankPrize().savePrizes(requireActivity(),prizes,FINISH_TASK_DATA_FILE_NAME);
+                adapter.removeItem(item.getOrder());
+                new DataBankPrize().savePrizes(requireActivity(),prizes,PRIZE_DATA_FILE_NAME);
             }
 
 

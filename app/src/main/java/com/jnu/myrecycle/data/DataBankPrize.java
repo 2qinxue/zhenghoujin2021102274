@@ -11,9 +11,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class DataBankPrize {
-    final String filename="prize.data";
+    public static String PRIZE_DATA_FILE_NAME="prize.data";
     ArrayList<Prize> prize=new ArrayList<Prize>();
-    public ArrayList<Prize> tasksInput(Context context) {
+    public ArrayList<Prize> tasksInput(Context context, String filename) {
         try
         {
             FileInputStream fileInputStream=context.openFileInput(filename);
@@ -28,10 +28,10 @@ public class DataBankPrize {
         }
         return prize;
     }
-    public void savePrizes(Context context, ArrayList<Prize> prizeDate) {
+    public void savePrizes(Context context, ArrayList<Prize> prizeDate, String filepath) {
         try
         {
-            FileOutputStream fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream fileOutputStream = context.openFileOutput(filepath, Context.MODE_PRIVATE);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(prizeDate);
             objectOutputStream.close();

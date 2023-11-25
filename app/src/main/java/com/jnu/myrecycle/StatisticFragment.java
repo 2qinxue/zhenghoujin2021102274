@@ -2,6 +2,8 @@ package com.jnu.myrecycle;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,14 +29,14 @@ public class StatisticFragment extends Fragment {
     private ArrayList<Task> tasks = new ArrayList<>();
     public String []statistic_list_Name={"日","周","月","年"};
     private int position;
+
+    public int dateposition=0;
     private ViewPager2 statisticViewPager;
 
     private TabLayout statisticTabLayout;
     public StatisticFragment() {
 
     }
-
-
     public static StatisticFragment newInstance(int position) {
         StatisticFragment fragment = new StatisticFragment();
         Bundle args = new Bundle();
@@ -48,6 +50,13 @@ public class StatisticFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+        setHasOptionsMenu(true);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // 清除菜单项
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -100,9 +109,7 @@ public class StatisticFragment extends Fragment {
                 default:
                     return null;
             }
-
         }
-
         @Override
         public int getItemCount() {
             return tabsize;

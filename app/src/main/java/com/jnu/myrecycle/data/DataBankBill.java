@@ -10,15 +10,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class DataBank {
-    final String filename="books.data";
-    ArrayList<Book> data=new ArrayList<Book>();
-    public ArrayList<Book> booksInput(Context context) {
+public class DataBankBill {
+
+    ArrayList<Bill> data=new ArrayList<Bill>();
+    public ArrayList<Bill> billsInput(Context context, String file_name) {
         try
         {
-            FileInputStream fileInputStream=context.openFileInput(filename);
+            FileInputStream fileInputStream=context.openFileInput(file_name);
             ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-            data= ( ArrayList<Book>)objectInputStream.readObject();
+            data= ( ArrayList<Bill>)objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
 
@@ -28,12 +28,12 @@ public class DataBank {
         }
         return data;
     }
-    public void saveBooks(Context context, ArrayList<Book> books) {
+    public void saveBills(Context context, ArrayList<Bill> bills, String file_name) {
         try
         {
-            FileOutputStream fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            FileOutputStream fileOutputStream = context.openFileOutput(file_name, Context.MODE_PRIVATE);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(books);
+            objectOutputStream.writeObject(bills);
             objectOutputStream.close();
             fileOutputStream.close();
         } catch (FileNotFoundException e) {

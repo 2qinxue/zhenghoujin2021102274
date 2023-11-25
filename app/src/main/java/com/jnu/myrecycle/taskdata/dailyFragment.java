@@ -1,5 +1,8 @@
 package com.jnu.myrecycle.taskdata;
 
+import static com.jnu.myrecycle.data.DataBankTask.DAILY_TASK_DATA_FILE_NAME;
+import static com.jnu.myrecycle.data.DataBankTask.FINISH_TASK_DATA_FILE_NAME;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -89,7 +92,7 @@ public class dailyFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = item.getOrder();
                         adapter.removeItem(position);
-                        new DataBankTask().saveTasks(requireActivity(), tasks);
+                        new DataBankTask().saveTasks(requireActivity(), tasks,DAILY_TASK_DATA_FILE_NAME);
                         Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -103,6 +106,10 @@ public class dailyFragment extends Fragment {
             }
             case 1:
             {
+                new DataBankTask().saveTasks(requireActivity(), tasks,FINISH_TASK_DATA_FILE_NAME);
+                adapter.removeItem(item.getOrder());
+                new DataBankTask().saveTasks(requireActivity(), tasks,DAILY_TASK_DATA_FILE_NAME);
+                Toast.makeText(getContext(), "已完成", Toast.LENGTH_SHORT).show();
 
             }
 

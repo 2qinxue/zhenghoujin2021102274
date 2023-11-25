@@ -1,5 +1,8 @@
 package com.jnu.myrecycle.taskdata;
 
+import static com.jnu.myrecycle.data.DataBankTask.FINISH_TASK_DATA_FILE_NAME;
+import static com.jnu.myrecycle.data.DataBankTask.WEEKLY_TASK_FILE_NAME;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -53,14 +56,14 @@ public class weeklyFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_taskdaily, container, false);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycle_view_task);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        tasks.add(new Task("普通阅读30分钟", "+30", "0/30"));
-        tasks.add(new Task("专业阅读30分钟）", "+100", "0/100"));
-        tasks.add(new Task("Keep 课程一次", "+120", "0/120"));
-        tasks.add(new Task("深蹲一套 ", "+2", "0/1"));
-        tasks.add(new Task("学习视频30分钟", "+30", "0/30"));
-        tasks.add(new Task("早睡", "+5", "0/1"));
-        tasks.add(new Task("背10个单词", "+10", "0/10"));
-        tasks.add(new Task("跑步30分钟", "+30", "0/30"));
+        tasks.add(new Task("普通阅读100分钟", "+150", "0/100"));
+        tasks.add(new Task("专业阅读200分钟）", "+200", "0/200"));
+        tasks.add(new Task("Keep 课程5次", "+200", "0/5"));
+        tasks.add(new Task("深蹲10套 ", "+20", "0/10"));
+        tasks.add(new Task("学习视频200分钟", "+100", "0/200"));
+        tasks.add(new Task("早睡5次", "+50", "0/5"));
+        tasks.add(new Task("背100个单词", "+30", "0/100"));
+        tasks.add(new Task("跑步300分钟", "+100", "0/300"));
         adapter = new WeeklyCustomAdapter(tasks);
         recyclerView.setAdapter(adapter);
 
@@ -77,7 +80,7 @@ public class weeklyFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int position = item.getOrder();
                         adapter.removeItem(position);
-                        new DataBankTask().saveTasks(requireActivity(), tasks);
+                        new DataBankTask().saveTasks(requireActivity(), tasks,WEEKLY_TASK_FILE_NAME);
                         Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -91,7 +94,10 @@ public class weeklyFragment extends Fragment {
             }
             case 1:
             {
-
+                new DataBankTask().saveTasks(requireActivity(), tasks,FINISH_TASK_DATA_FILE_NAME);
+                adapter.removeItem(item.getOrder());
+                new DataBankTask().saveTasks(requireActivity(), tasks,WEEKLY_TASK_FILE_NAME);
+                Toast.makeText(getContext(), "已完成", Toast.LENGTH_SHORT).show();
             }
 
 
