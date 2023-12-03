@@ -16,10 +16,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Myrecycle"
+        android:theme="@style/Theme.My_APP"
         tools:targetApi="31">
         <activity
-            android:name=".view.BillActivity"
+            android:name=".ownopera.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".prizedata.AddPrizeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".taskdata.AddTaskActivity"
+            android:exported="false" />
+        <activity
+            android:name=".statisticdata.BillActivity"
             android:exported="false" />
         <activity
             android:name=".ownopera.ChangeavatarActivity"

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.jnu.myrecycle.view.Statistic
+        <com.jnu.yidongzuoye.view.IncomBIll
             android:id="@+id/statisticyear1"
             android:layout_width="match_parent"
             android:layout_height="204dp"
@@ -20,9 +20,9 @@
             app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.008"></com.jnu.myrecycle.view.Statistic>
+            app:layout_constraintVertical_bias="0.008"></com.jnu.yidongzuoye.view.IncomBIll>
 
-        <com.jnu.myrecycle.view.Statistic
+        <com.jnu.yidongzuoye.view.CustomCurveChart
             android:id="@+id/statisticyear2"
             android:layout_width="match_parent"
             android:layout_height="217dp"
@@ -32,9 +32,9 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498"></com.jnu.myrecycle.view.Statistic>
+            app:layout_constraintVertical_bias="0.498"></com.jnu.yidongzuoye.view.CustomCurveChart>
 
-        <com.jnu.myrecycle.view.Statistic
+        <com.jnu.yidongzuoye.view.Statistic
             android:id="@+id/statisticyear3"
             android:layout_width="match_parent"
             android:layout_height="205dp"
@@ -44,7 +44,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"></com.jnu.myrecycle.view.Statistic>
+            app:layout_constraintVertical_bias="1.0"></com.jnu.yidongzuoye.view.Statistic>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

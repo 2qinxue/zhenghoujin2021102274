@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.jnu.myrecycle"
+    namespace = "com.jnu.yidongzuoye"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.jnu.Test"
+        applicationId = "com.jnu.yidongzuoye"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

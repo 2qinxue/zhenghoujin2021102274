@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".statisticdata.StatisticdailyFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.jnu.myrecycle.view.Statistic
+        <com.jnu.yidongzuoye.view.IncomBIll
             android:id="@+id/statistic"
             android:layout_width="match_parent"
             android:layout_height="230dp"
@@ -19,9 +20,9 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.003"></com.jnu.myrecycle.view.Statistic>
+            app:layout_constraintVertical_bias="0.003"></com.jnu.yidongzuoye.view.IncomBIll>
 
-        <com.jnu.myrecycle.view.Statistic
+        <com.jnu.yidongzuoye.view.CustomCurveChart
             android:id="@+id/statistic2"
             android:layout_width="match_parent"
             android:layout_height="210dp"
@@ -31,9 +32,9 @@
             app:layout_constraintHorizontal_bias="0.937"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.524"></com.jnu.myrecycle.view.Statistic>
+            app:layout_constraintVertical_bias="0.524"></com.jnu.yidongzuoye.view.CustomCurveChart>
 
-        <com.jnu.myrecycle.view.Statistic
+        <com.jnu.yidongzuoye.view.Statistic
             android:id="@+id/statistic3"
             android:layout_width="match_parent"
             android:layout_height="201dp"
@@ -43,7 +44,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"></com.jnu.myrecycle.view.Statistic>
+            app:layout_constraintVertical_bias="1.0"></com.jnu.yidongzuoye.view.Statistic>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

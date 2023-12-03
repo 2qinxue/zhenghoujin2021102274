@@ -25,7 +25,7 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Your Title">
+            app:title="@string/app_name">
 
             <Button
                 android:id="@+id/button"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="账单"
-                android:textColor="@color/teal_200"/>
+                android:textColor="@color/teal_200" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.viewpager2.widget.ViewPager2

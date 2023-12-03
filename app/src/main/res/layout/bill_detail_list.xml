@@ -10,40 +10,41 @@
     app:layout_constraintVertical_bias="0.0"
     android:background="@drawable/item_border"
     xmlns:android="http://schemas.android.com/apk/res/android">
-        <TextView
-            android:id="@+id/textView_bill_name"
-            android:layout_width="179dp"
-            android:layout_height="29dp"
-            android:text="TextView1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.068"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.313" />
 
-        <TextView
-            android:id="@+id/textView_bill_score"
-            android:layout_width="75dp"
-            android:layout_height="46dp"
-            android:text="TextView2"
-            android:textColor="@color/teal_200"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.917"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.494" />
+    <TextView
+        android:id="@+id/textView_bill_name"
+        android:layout_width="179dp"
+        android:layout_height="29dp"
+        android:text="TextView1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.313" />
 
-        <TextView
-            android:id="@+id/textView_bill_time"
-            android:layout_width="147dp"
-            android:layout_height="31dp"
-            android:layout_marginBottom="4dp"
-            android:text="TextView3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.108"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.416" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView_bill_score"
+        android:layout_width="75dp"
+        android:layout_height="46dp"
+        android:text="TextView2"
+        android:textColor="@color/teal_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.494" />
+
+    <TextView
+        android:id="@+id/textView_bill_time"
+        android:layout_width="147dp"
+        android:layout_height="31dp"
+        android:layout_marginBottom="4dp"
+        android:text="TextView3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.416" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,4 +7,11 @@
     <string name="Add">添加</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_task">新建任务</string>
+    <string name="check_bill">查看账单</string>
+    <string name="task_sort">任务排序</string>
+    <string name="addprize">新建奖励</string>
+    <string name="achievement">耗费成就点数</string>
+    <string name="Add_label">添加标签</string>
+    <string name="sort_prize">奖励排序</string>
 </resources>
