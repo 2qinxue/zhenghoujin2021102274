@@ -9,18 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jnu.yidongzuoye.R;
-public class StatisticmonthlyFragment extends Fragment {
-    private int childPosition;
+import com.jnu.yidongzuoye.view.CustomCurveChart;
+import com.jnu.yidongzuoye.view.IncomBIll;
+import com.jnu.yidongzuoye.view.Statistic;
 
-    private int parentPosition;
+public class StatisticmonthlyFragment extends Fragment {
     public StatisticmonthlyFragment() {
         // Required empty public constructor
     }
-    public static StatisticmonthlyFragment newInstance(int parentPosition, int childPosition) {
+    public static StatisticmonthlyFragment newInstance( int childPosition) {
         StatisticmonthlyFragment fragment = new StatisticmonthlyFragment();
         Bundle args = new Bundle();
-        fragment.parentPosition = parentPosition;
-        fragment.childPosition = childPosition;
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -28,15 +28,14 @@ public class StatisticmonthlyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_statisticmonthly, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_statisticmonthly, container, false);
+        return rootView;
     }
+
 }

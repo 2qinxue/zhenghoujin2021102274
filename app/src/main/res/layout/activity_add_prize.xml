@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <Button
         android:id="@+id/button_OK1"
         android:layout_width="wrap_content"
@@ -47,7 +46,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="428dp"
+            android:layout_width="match_parent"
             android:layout_height="129dp"
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,41 +56,70 @@
             app:layout_constraintVertical_bias="0.0">
 
             <EditText
-                android:id="@+id/edittextView_daily_task_name1"
-                android:layout_width="193dp"
-                android:layout_height="48dp"
-                android:text="name"
+                android:id="@+id/edittextView_daily_prize_name1"
+                android:layout_width="153dp"
+                android:layout_height="47dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.068"
+                app:layout_constraintHorizontal_bias="0.328"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.197" />
+                app:layout_constraintVertical_bias="0.195" />
 
             <EditText
                 android:id="@+id/edittextView_daily_score1"
-                android:layout_width="134dp"
-                android:layout_height="58dp"
-                android:text="score"
+                android:layout_width="77dp"
+                android:layout_height="65dp"
                 android:textColor="@color/teal_200"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.87"
+                app:layout_constraintHorizontal_bias="0.951"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.492" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textView_daily_finish1"
                 android:layout_width="139dp"
                 android:layout_height="45dp"
-                android:text=" ____"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.085"
+                app:layout_constraintHorizontal_bias="0.311"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittextView_daily_task_name1"
-                app:layout_constraintVertical_bias="0.416" />
+                app:layout_constraintTop_toBottomOf="@+id/edittextView_daily_prize_name1"
+                app:layout_constraintVertical_bias="0.238" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="52dp"
+                android:layout_height="47dp"
+                android:text="score:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edittextView_daily_score1"
+                app:layout_constraintHorizontal_bias="0.714"
+                app:layout_constraintStart_toEndOf="@+id/edittextView_daily_prize_name1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="52dp"
+                android:layout_height="41dp"
+                android:text="name:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edittextView_daily_prize_name1"
+                app:layout_constraintHorizontal_bias="0.592"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.179" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="52dp"
+                android:layout_height="39dp"
+                android:text="progress:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView_daily_finish1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

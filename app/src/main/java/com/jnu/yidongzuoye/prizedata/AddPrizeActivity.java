@@ -24,13 +24,12 @@ import com.jnu.yidongzuoye.data.Prize;
 import java.util.ArrayList;
 
 public class AddPrizeActivity extends AppCompatActivity {
-    TextView textView;
-    EditText name, score;
+    EditText name, score,textView;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_add_prize);
-            name= findViewById(R.id.edittextView_daily_task_name1);
+            name= findViewById(R.id.edittextView_daily_prize_name1);
             score = findViewById(R.id.edittextView_daily_score1);
             RecyclerView recyclerView = findViewById(R.id.recycle1);
             textView= findViewById(R.id.textView_daily_finish1);

@@ -9,24 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jnu.yidongzuoye.R;
+import com.jnu.yidongzuoye.view.CustomCurveChart;
+import com.jnu.yidongzuoye.view.IncomBIll;
+import com.jnu.yidongzuoye.view.Statistic;
 
 public class StatisticweeklyFragment extends Fragment {
-
-
-    private int childPosition;
-
-    private int parentPosition;
-
     public StatisticweeklyFragment() {
         // Required empty public constructor
     }
 
-    public static StatisticweeklyFragment newInstance(int parentPosition, int childPosition) {
+    public static StatisticweeklyFragment newInstance( int childPosition) {
         StatisticweeklyFragment fragment = new StatisticweeklyFragment();
         Bundle args = new Bundle();
-
-        fragment.parentPosition = parentPosition;
-        fragment.childPosition = childPosition;
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,15 +28,15 @@ public class StatisticweeklyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_statisticweekly, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_statisticweekly, container, false);
+
+        return rootView;
     }
 }

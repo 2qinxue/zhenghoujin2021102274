@@ -35,8 +35,7 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,19 +44,39 @@ public class TaskListFragment extends Fragment {
         View rootView =inflater.inflate(R.layout.fragment_task_list, container, false);
         taskTabLayout=rootView.findViewById(R.id.tabLayout_task);
         taskViewPager=rootView.findViewById(R.id.viewPaGet2_);
+
+
         SubAdapter adapter = new SubAdapter(this);
         taskViewPager.setAdapter(adapter);
-
         // 将子ViewPager与子TabLayout关联
         new TabLayoutMediator(taskTabLayout, taskViewPager,
-                (tab, position) -> {
-                    // 设置子TabLayout的标题
-                    tab.setText(tabName[position]);
-                }
+                (tab, position) -> {tab.setText(tabName[position]);}
         ).attach();
+        taskViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // 判断是否滑动到边缘
+                boolean isScrollingToEdge =  (position == taskViewPager.getAdapter().getItemCount() - 1);
+                // 如果滑动到边缘，则请求父 ViewPager2 不要拦截滑动事件
+                MainActivity.viewPager2.setUserInputEnabled(isScrollingToEdge);
+            }
+
+        });
         return rootView;
     }
+    public void scrollToNextFragment() {
+        // 获取当前显示的子 Fragment 的索引
+        int currentFragmentIndex = taskViewPager.getCurrentItem();
+        // 切换到下一个子 Fragment
+        if (currentFragmentIndex < taskViewPager.getAdapter().getItemCount()) {
+            taskViewPager.setCurrentItem(currentFragmentIndex);
+        }
+        else
+        {
+            MainActivity.viewPager2.setUserInputEnabled(true);
+        }
 
+    }
     public class SubAdapter extends FragmentStateAdapter {
         private int tabsize = tabName.length; // 子Fragment的数量
 

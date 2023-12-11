@@ -13,40 +13,37 @@
         <com.jnu.yidongzuoye.view.IncomBIll
             android:id="@+id/statisticmonth1"
             android:layout_width="match_parent"
-            android:layout_height="227dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/item_border"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/statisticmonth2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.008"></com.jnu.yidongzuoye.view.IncomBIll>
+            app:layout_constraintVertical_weight="1"></com.jnu.yidongzuoye.view.IncomBIll>
 
         <com.jnu.yidongzuoye.view.CustomCurveChart
             android:id="@+id/statisticmonth2"
             android:layout_width="match_parent"
-            android:layout_height="218dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/item_border"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/statisticmonth3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.507">
-
-        </com.jnu.yidongzuoye.view.CustomCurveChart>
+            app:layout_constraintTop_toBottomOf="@+id/statisticmonth1"
+            app:layout_constraintVertical_weight="1"></com.jnu.yidongzuoye.view.CustomCurveChart>
 
         <com.jnu.yidongzuoye.view.Statistic
             android:id="@+id/statisticmonth3"
             android:layout_width="match_parent"
-            android:layout_height="223dp"
+            android:layout_height="0dp"
             android:background="@drawable/item_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"></com.jnu.yidongzuoye.view.Statistic>
+            app:layout_constraintTop_toBottomOf="@+id/statisticmonth2"
+            app:layout_constraintVertical_weight="1"></com.jnu.yidongzuoye.view.Statistic>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

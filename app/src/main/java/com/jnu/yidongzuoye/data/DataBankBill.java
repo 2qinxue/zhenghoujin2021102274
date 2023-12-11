@@ -1,5 +1,7 @@
 package com.jnu.yidongzuoye.data;
 
+import static com.jnu.yidongzuoye.MainActivity.isAddTask;
+
 import android.content.Context;
 
 import java.io.FileInputStream;
@@ -43,5 +45,6 @@ public class DataBankBill {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        isAddTask=true;
     }
 }

@@ -28,8 +28,13 @@ import com.jnu.yidongzuoye.data.DataBankBill;
 import com.jnu.yidongzuoye.data.DataBankPrize;
 import com.jnu.yidongzuoye.data.Prize;
 import com.jnu.yidongzuoye.prizedata.AddPrizeActivity;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class PrizeListFragment extends Fragment {
 
@@ -162,8 +167,20 @@ public class PrizeListFragment extends Fragment {
                 menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        allBills = new DataBankBill().billsInput(requireActivity());
-                        allBills.add(new Bill(prizes.get(item.getOrder()).getPrizeName(), prizes.get(item.getOrder()).getScore(), prizes.get(item.getOrder()).getNum()));
+                        Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = format.format(now);
+                        // 获取中文星期几
+                        SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                        String dayOfWeek = weekFormat.format(now);
+
+                        try {
+                            allBills = new DataBankBill().billsInput(requireActivity());
+                        }
+                        catch (Exception e){
+                            allBills = new ArrayList<>();
+                        }
+                        allBills.add(new Bill(prizes.get(item.getOrder()).getPrizeName(), prizes.get(item.getOrder()).getScore(), formattedDate+" "+dayOfWeek));
                         new DataBankBill().saveBills(requireActivity(), allBills);
                         adapter.removeItem(item.getOrder());
                         new DataBankPrize().savePrizes(requireActivity(), prizes, PRIZE_DATA_FILE_NAME);

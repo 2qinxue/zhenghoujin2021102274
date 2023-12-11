@@ -31,7 +31,7 @@ public class AddTaskActivity extends AppCompatActivity {
         EditText name = findViewById(R.id.edittextView_daily_task_name);
         EditText score = findViewById(R.id.edittextView_daily_score);
         RecyclerView recyclerView = findViewById(R.id.recycle);
-        TextView textView = findViewById(R.id.textView_daily_finish);
+        EditText textView = findViewById(R.id.edittext_daily_finish);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         int position_tab = getIntent().getIntExtra("position_tab", 0);
         Button button_OK = findViewById(R.id.button_OK);

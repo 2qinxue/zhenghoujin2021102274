@@ -35,9 +35,13 @@ import com.jnu.yidongzuoye.data.DataBankBill;
 import com.jnu.yidongzuoye.data.DataBankTask;
 import com.jnu.yidongzuoye.data.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class dailyFragment extends Fragment {
     private int parentPosition;
@@ -137,8 +141,8 @@ public class dailyFragment extends Fragment {
                 this.task_name = task_item_view.findViewById(R.id.textView_daily_task_name);
                 this.tasks_score = task_item_view.findViewById(R.id.textView_daily_score);
                 this.num = task_item_view.findViewById(R.id.textView_daily_finish);
-                checkBox = task_item_view.findViewById(R.id.checkBox);
-                checkBox.setChecked(false);
+                this.checkBox = task_item_view.findViewById(R.id.checkBox);
+                this.checkBox.setChecked(false);
 
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -150,7 +154,13 @@ public class dailyFragment extends Fragment {
                             catch (Exception e){
                                 allBills = new ArrayList<>();
                             }
-                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), num.getText().toString()));
+                            Date now = new Date();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String formattedDate = format.format(now);
+                            // 获取中文星期几
+                            SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                            String dayOfWeek = weekFormat.format(now);
+                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), formattedDate+" "+ dayOfWeek));
                             new DataBankBill().saveBills(requireActivity(), allBills);
                             int position = (int) buttonView.getTag(); // 获取位置信息
                             // 其他逻辑处理...
@@ -195,8 +205,20 @@ public class dailyFragment extends Fragment {
                 menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        allBills = new DataBankBill().billsInput(requireActivity());
-                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), tasks.get(item.getOrder()).getNum()));
+
+                        Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = format.format(now);
+                        // 获取中文星期几
+                        SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                        String dayOfWeek = weekFormat.format(now);
+                        try {
+                            allBills = new DataBankBill().billsInput(requireActivity());
+                        }
+                        catch (Exception e){
+                            allBills = new ArrayList<>();
+                        }
+                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), formattedDate+" "+dayOfWeek));
                         new DataBankBill().saveBills(requireActivity(), allBills);
                         adapter.removeItem(item.getOrder());
                         new DataBankTask().saveTasks(requireActivity(), tasks, DAILY_TASK_DATA_FILE_NAME);
@@ -238,6 +260,7 @@ public class dailyFragment extends Fragment {
             holder.getTaskScore().setText(task_item.get(position).getScore());
             holder.getTaskFinish().setText(task_item.get(position).getNum());
             holder.checkBox.setTag(position); // 设置tag为当前项的位置
+            holder.checkBox.setChecked(false);
         }
         @Override
         public int getItemCount() {

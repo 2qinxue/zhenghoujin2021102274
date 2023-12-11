@@ -1,7 +1,6 @@
 package com.jnu.yidongzuoye.taskdata;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static com.jnu.yidongzuoye.MainActivity.FINISH_TASK_DATA_FILE_NAME;
 import static com.jnu.yidongzuoye.MainActivity.allBills;
 import static com.jnu.yidongzuoye.data.DataBankTask.DAILY_TASK_DATA_FILE_NAME;
 import static com.jnu.yidongzuoye.data.DataBankTask.INSTANCE_TASK_STORE_filename;
@@ -37,9 +36,12 @@ import com.jnu.yidongzuoye.data.DataBankBill;
 import com.jnu.yidongzuoye.data.DataBankTask;
 import com.jnu.yidongzuoye.data.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class instanceFragment extends Fragment {
 
@@ -165,7 +167,13 @@ public class instanceFragment extends Fragment {
                             catch (Exception e){
                                 allBills = new ArrayList<>();
                             }
-                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), num.getText().toString()));
+                            Date now = new Date();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String formattedDate = format.format(now);
+                            // 获取中文星期几
+                            SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                            String dayOfWeek = weekFormat.format(now);
+                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), formattedDate+" "+ dayOfWeek));
                             new DataBankBill().saveBills(requireActivity(), allBills);
                             int position = (int) buttonView.getTag(); // 获取位置信息
                             // 其他逻辑处理...
@@ -209,8 +217,19 @@ public class instanceFragment extends Fragment {
                 menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        allBills = new DataBankBill().billsInput(requireActivity());
-                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), tasks.get(item.getOrder()).getNum()));
+                        Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = format.format(now);
+                        // 获取中文星期几
+                        SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                        String dayOfWeek = weekFormat.format(now);
+                        try {
+                            allBills = new DataBankBill().billsInput(requireActivity());
+                        }
+                        catch (Exception e){
+                            allBills = new ArrayList<>();
+                        }
+                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), formattedDate+" "+dayOfWeek));
                         new DataBankBill().saveBills(requireActivity(), allBills);
                         adapter.removeItem(item.getOrder());
                         new DataBankTask().saveTasks(requireActivity(), tasks, INSTANCE_TASK_filename);
@@ -252,6 +271,7 @@ public class instanceFragment extends Fragment {
             holder.getTaskScore().setText(task_item.get(position).getScore());
             holder.getTaskFinish().setText(task_item.get(position).getNum());
             holder.checkBox.setTag(position);
+            holder.checkBox.setChecked(false);
         }
 
         @Override

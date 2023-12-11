@@ -9,7 +9,7 @@ import com.jnu.yidongzuoye.taskdata.commonFragment;
 import com.jnu.yidongzuoye.taskdata.dailyFragment;
 import com.jnu.yidongzuoye.taskdata.instanceFragment;
 import com.jnu.yidongzuoye.taskdata.weeklyFragment;
-import com.jnu.yidongzuoye.statisticdata.BillActivity;
+import com.jnu.yidongzuoye.bill_list.BillActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,8 +32,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static ArrayList<Bill> allBills = new ArrayList<>();
-    public static String FINISH_TASK_DATA_FILE_NAME="finished_tasks.txt";
-    public String []TabList={"任务","奖励","统计","我"};
+
+
+    public static boolean isAddTask = false;
+    public static String []TabList={"任务","奖励","统计","我"};
     public static ViewPager2 viewPager2;
     TabLayout tabLayout1;
     Toolbar toolbar;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         viewPager2 = findViewById(R.id.viewPaGet2);
         tabLayout1= findViewById(R.id.tabLayout1);
         toolbar = findViewById(R.id.toolbar);
@@ -51,19 +54,43 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 Button button = findViewById(R.id.button);
+                button.setVisibility(View.GONE);
                 invalidateOptionsMenu(); // 切换标签页的逻辑// 通知系统重新创建菜单
-                if (position == 2) {button.setVisibility(View.VISIBLE);}
-                else {button.setVisibility(View.GONE);}
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                if (position == 0) {
+                    MainActivity.isAddTask = false;
+                    // 获取当前显示的子 Fragment
+                    viewPager2.setUserInputEnabled(false);
+                    Fragment currentFragment1 = getSupportFragmentManager().findFragmentByTag("f0");
+                    if (currentFragment1 instanceof TaskListFragment) {
+                        // 调用子 Fragment 的方法进行滑动切换
+                        ((TaskListFragment) currentFragment1).scrollToNextFragment();
+
+                    }
+                }
+                else if (position == 2)
+                {
+                    viewPager2.setUserInputEnabled(false);
+                        // 调用子 Fragment 的方法进行滑动切换
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("f2");
+                    if(currentFragment instanceof StatisticFragment)
+                    {
+                        // 调用子 Fragment 的方法进行滑动切换
+                        ((StatisticFragment) currentFragment).scrollToNextFragment();
+                    }
+                    button.setVisibility(View.VISIBLE);
+                    button.setOnClickListener(v -> {
                         Intent intent = new Intent(MainActivity.this, BillActivity.class);
                         startActivity(intent);
-                    }});}
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
+                    });
+                }
+                else
+                {
+                    MainActivity.isAddTask = false;
+                    viewPager2.setUserInputEnabled(true);
+                }
 
+            }
+        });
         MainAdapter mainAdapter = new MainAdapter(this);
         viewPager2.setAdapter(mainAdapter);
         new TabLayoutMediator(tabLayout1, viewPager2, (tab, position) ->
@@ -79,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (currentTab == 1) {
             getMenuInflater().inflate(R.menu.prize_menu, menu);
             toolbar.setTitle("奖励列表");
-        } else if (currentTab == 2) {
+        } else {
             getMenuInflater().inflate(R.menu.common_menu, menu);
             toolbar.setTitle("时间管理APP");
         }
@@ -175,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public class MainAdapter extends FragmentStateAdapter {
+    public static class MainAdapter extends FragmentStateAdapter {
 //        private MainActivity mainFragment;
         public MainAdapter(MainActivity fragment) {
             super(fragment);
@@ -183,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         }
         @NonNull
         @Override
-        public Fragment createFragment(int position) {
+        public  Fragment createFragment(int position) {
             switch (position) {
                 case 0: {
                     return TaskListFragment.newInstance(position);

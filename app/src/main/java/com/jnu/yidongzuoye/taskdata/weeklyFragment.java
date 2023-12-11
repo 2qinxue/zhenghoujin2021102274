@@ -1,11 +1,12 @@
 package com.jnu.yidongzuoye.taskdata;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static com.jnu.yidongzuoye.MainActivity.FINISH_TASK_DATA_FILE_NAME;
 import static com.jnu.yidongzuoye.MainActivity.allBills;
 import static com.jnu.yidongzuoye.data.DataBankTask.DAILY_TASK_DATA_FILE_NAME;
 import static com.jnu.yidongzuoye.data.DataBankTask.WEEKLY_TASK_FILE_NAME;
 import static com.jnu.yidongzuoye.data.DataBankTask.WEEKLY_TASK_STORE_FILENAME;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,14 +34,14 @@ import com.jnu.yidongzuoye.data.DataBankBill;
 import com.jnu.yidongzuoye.data.DataBankTask;
 import com.jnu.yidongzuoye.data.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class weeklyFragment extends Fragment {
-
-    private int parentPosition;
-    private int childPosition;
     private static ArrayList<Task> tasks = new ArrayList<>();
     private ArrayList<Task> tasks_store = new ArrayList<>();
     public static ActivityResultLauncher<Intent> itemLauncher;
@@ -50,8 +51,6 @@ public class weeklyFragment extends Fragment {
     }
     public static weeklyFragment newInstance(int parentPosition, int childPosition) {
         weeklyFragment fragment = new weeklyFragment();
-        fragment.parentPosition = parentPosition;
-        fragment.childPosition = childPosition;
         return fragment;
     }
     @Override
@@ -66,10 +65,9 @@ public class weeklyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        // View rootView = inflater.inflate(R.layout.fragment_weekly, container, false);
-        View rootView = inflater.inflate(R.layout.fragment_taskdaily, container, false);
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycle_view_task);
+        View rootView = inflater.inflate(R.layout.fragment_taskweekly, container, false);
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycle_view_task_weekly);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
         try{
             tasks_store.add(new Task("普通阅读100分钟", "+150", "0/100"));
             tasks_store.add(new Task("专业阅读200分钟）", "+200", "0/200"));
@@ -87,7 +85,7 @@ public class weeklyFragment extends Fragment {
             new DataBankTask().saveTasks(requireActivity(), tasks,WEEKLY_TASK_FILE_NAME);
         }
 
-        if( tasks.size()==0){
+        if(0 == tasks.size()){
             tasks.add(new Task("普通阅读100分钟", "+150", "0/150"));
         }
         adapter = new WeeklyCustomAdapter(tasks);
@@ -98,9 +96,10 @@ public class weeklyFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String name = data.getStringExtra("name");
-                        Double score_;
+                        double score_;
                         String score_text = data.getStringExtra("score");
                         try {
+                            assert score_text != null;
                             score_ = Double.parseDouble(score_text);// 输入的数据是 double 类型
                         } catch (NumberFormatException e) {
                             score_ = 0.0;   // 输入的数据不是 double 类型
@@ -113,7 +112,6 @@ public class weeklyFragment extends Fragment {
                         Toast.makeText(requireActivity(), "哈哈哈", Toast.LENGTH_SHORT).show();
                     }
                 });
-
         return rootView;
     }
     public class WeeklyCustomAdapter extends  RecyclerView.Adapter<WeeklyCustomAdapter.ViewHolder>{
@@ -124,12 +122,6 @@ public class weeklyFragment extends Fragment {
             notifyItemRemoved(position);
         }//删除books
 
-        public void editItem(int position, String newName, String newScore) {
-            Task task = task_item.get(position);
-            task.setTaskName(newName);
-            task.setScore(newScore);
-            notifyItemChanged(position);
-        }
         public class ViewHolder extends RecyclerView.ViewHolder
                 implements View.OnCreateContextMenuListener {
             private CheckBox checkBox;
@@ -154,7 +146,13 @@ public class weeklyFragment extends Fragment {
                             catch (Exception e){
                                 allBills = new ArrayList<>();
                             }
-                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), num.getText().toString()));
+                            Date now = new Date();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String formattedDate = format.format(now);
+                            // 获取中文星期几
+                            SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                            String dayOfWeek = weekFormat.format(now);
+                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), formattedDate+" "+ dayOfWeek));
                             new DataBankBill().saveBills(requireActivity(), allBills);
                             int position = (int) buttonView.getTag(); // 获取位置信息
                             // 其他逻辑处理...
@@ -198,8 +196,20 @@ public class weeklyFragment extends Fragment {
                 menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        allBills = new DataBankBill().billsInput(requireActivity());
-                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), tasks.get(item.getOrder()).getNum()));
+
+                        Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = format.format(now);
+                        // 获取中文星期几
+                        SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                        String dayOfWeek = weekFormat.format(now);
+                        try {
+                            allBills = new DataBankBill().billsInput(requireActivity());
+                        }
+                        catch (Exception e){
+                            allBills = new ArrayList<>();
+                        }
+                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), formattedDate+" "+dayOfWeek));
                         new DataBankBill().saveBills(requireActivity(), allBills);
                         adapter.removeItem(item.getOrder());
                         new DataBankTask().saveTasks(requireActivity(), tasks, WEEKLY_TASK_FILE_NAME);
@@ -241,6 +251,7 @@ public class weeklyFragment extends Fragment {
             holder.getTaskScore().setText(task_item.get(position).getScore());
             holder.getTaskFinish().setText(task_item.get(position).getNum());
             holder.checkBox.setTag(position);
+            holder.checkBox.setChecked(false);
         }
 
         @Override
@@ -255,6 +266,7 @@ public class weeklyFragment extends Fragment {
             return Integer.compare((int) Double.parseDouble(task1.getScore().substring(1)),(int)Double.parseDouble(task2.getScore().substring(1)));
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
     public static void Sort_weekly_task(){
         Collections.sort(tasks, new weeklyFragment.TaskComparator());
         adapter.notifyDataSetChanged(); // 通知适配器数据发生了变化

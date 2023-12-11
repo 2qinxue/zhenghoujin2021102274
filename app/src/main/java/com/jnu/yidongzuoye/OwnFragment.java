@@ -32,6 +32,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +53,7 @@ public class OwnFragment extends Fragment {
 
     public static ActivityResultLauncher<Intent> imageLauncher;
 
-    private final String[] item = {"我的钱包", "副本设置", "退出登录", "帮助", "检测更新", "请作者喝除白开水"};
+    private final String[] item = {"我的钱包", "副本设置", "退出登录", "帮助", "检测更新", "请作者喝白开水"};
     ArrayList<Ownitemgroup> ownitemgroups = new ArrayList<>();
 
     public OwnFragment() {
@@ -243,6 +245,17 @@ public class OwnFragment extends Fragment {
                                     View dialogView = inflater.inflate(R.layout.mywallet, null);
                                     TextView textView = dialogView.findViewById(R.id.textView_yue);
                                     textView.setText("￥" + new Date().getHours());
+                                    Button button = dialogView.findViewById(R.id.button_pay);
+                                    button.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(Double.parseDouble(textView.getText().toString().substring(1))==0)
+                                                Toast.makeText(v.getContext(), "钱包没钱了！！", Toast.LENGTH_SHORT).show();
+                                            else
+                                                Toast.makeText(v.getContext(), "提现成功", Toast.LENGTH_SHORT).show();
+                                            textView.setText("￥0.00");
+                                        }
+                                    });
                                     ImageView moneyImageView = dialogView.findViewById(R.id.moneyImageView);
                                     ObjectAnimator moneyAnimator = ObjectAnimator.ofFloat(moneyImageView, "translationY", 0f, 1000f);
                                     moneyAnimator.setDuration(4000); // 设置动画持续时间为2秒
@@ -262,11 +275,13 @@ public class OwnFragment extends Fragment {
                                     break;
                                 }
                                 case 2:
+
                                     AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
                                     builder1.setTitle("副本设置");
                                     builder1.setNegativeButton("关闭", null);
                                     builder1.create();
                                     builder1.show();
+
                                     break;
                                 case 3:
                                     Intent intent = new Intent();
@@ -292,6 +307,8 @@ public class OwnFragment extends Fragment {
                                     builder3.setTitle("检测更新");
                                     builder3.setMessage("检测到为：绝版");
                                     builder3.setNegativeButton("关闭", null);
+                                    builder3.create();
+                                    builder3.show();
                                     break;
                                 case 6:
                                     AlertDialog.Builder builder4 = new AlertDialog.Builder(v.getContext());
