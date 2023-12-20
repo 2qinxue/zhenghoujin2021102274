@@ -5,7 +5,6 @@ import static com.jnu.yidongzuoye.MainActivity.isAddTask;
 import android.content.Context;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 public class DataBankBill {
 
-    ArrayList<Bill> data=new ArrayList<Bill>();
+    ArrayList<Bill> data= new ArrayList<>();
 
     public  static String Bill_STORE_FILENAME="bill_store.data";
     public ArrayList<Bill> billsInput(Context context) {
@@ -40,8 +39,6 @@ public class DataBankBill {
             objectOutputStream.writeObject(bills);
             objectOutputStream.close();
             fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

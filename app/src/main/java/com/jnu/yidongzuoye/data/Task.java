@@ -1,12 +1,10 @@
 package com.jnu.yidongzuoye.data;
 
-import android.widget.CheckBox;
-
 import java.io.Serializable;
 
 public class Task implements Serializable {
     protected String TaskName,Score,Num;
-    protected CheckBox checkBox;
+
     public String getTaskName() {
         return TaskName;
     }
@@ -23,9 +21,6 @@ public class Task implements Serializable {
         this.TaskName = TaskName;
         this.Score = Score;
         this.Num = Num;
-    }
-    public void setTaskName(String newTaskName) {
-        this.TaskName = newTaskName;
     }
 
     public void setScore(String newTaskScore) {

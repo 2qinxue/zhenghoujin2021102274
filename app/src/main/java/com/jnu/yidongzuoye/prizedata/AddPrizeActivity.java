@@ -1,10 +1,5 @@
 package com.jnu.yidongzuoye.prizedata;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jnu.yidongzuoye.R;
 import com.jnu.yidongzuoye.data.DataBankPrize;
@@ -35,15 +35,13 @@ public class AddPrizeActivity extends AppCompatActivity {
             textView= findViewById(R.id.textView_daily_finish1);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             Button button_OK = findViewById(R.id.button_OK1);
-            button_OK.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra("name",   name.getText().toString());
-                    intent.putExtra("score", score.getText().toString());
-                    intent.putExtra("finish_num", textView.getText().toString());
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
+            button_OK.setOnClickListener(v -> {
+                Intent intent = new Intent();
+                intent.putExtra("name",   name.getText().toString());
+                intent.putExtra("score", score.getText().toString());
+                intent.putExtra("finish_num", textView.getText().toString());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             });
             ArrayList<Prize> prizes = new DataBankPrize().prizesInput(this, DataBankPrize.PRIZE_STORE_DATA_FILE_NAME);
             CustomAdapter adapter = new CustomAdapter(prizes);
@@ -78,7 +76,9 @@ public class AddPrizeActivity extends AppCompatActivity {
 
 
             class PrizeAddCustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-                private TextView itemName, item_score, item_finsih;
+                private final TextView itemName;
+                private final TextView item_score;
+                private final TextView item_finsih;
 
                 ImageButton imageButton;
                 public PrizeAddCustomViewHolder(@NonNull View itemView) {

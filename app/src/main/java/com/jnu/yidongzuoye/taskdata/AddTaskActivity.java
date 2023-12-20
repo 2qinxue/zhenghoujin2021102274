@@ -1,12 +1,10 @@
 package com.jnu.yidongzuoye.taskdata;
+
 import static com.jnu.yidongzuoye.data.DataBankTask.COMMON_TASK_STORE_FILENAME;
 import static com.jnu.yidongzuoye.data.DataBankTask.DAILY_TASK_STORE_FILENAME;
 import static com.jnu.yidongzuoye.data.DataBankTask.INSTANCE_TASK_STORE_filename;
 import static com.jnu.yidongzuoye.data.DataBankTask.WEEKLY_TASK_STORE_FILENAME;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.jnu.yidongzuoye.R;
 import com.jnu.yidongzuoye.data.DataBankTask;
 import com.jnu.yidongzuoye.data.Task;
+
 import java.util.ArrayList;
 public class AddTaskActivity extends AppCompatActivity {
-    private String name_tab[]={DAILY_TASK_STORE_FILENAME,WEEKLY_TASK_STORE_FILENAME,COMMON_TASK_STORE_FILENAME,INSTANCE_TASK_STORE_filename};
+    private final String[] name_tab ={DAILY_TASK_STORE_FILENAME,WEEKLY_TASK_STORE_FILENAME,COMMON_TASK_STORE_FILENAME,INSTANCE_TASK_STORE_filename};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +40,13 @@ public class AddTaskActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         int position_tab = getIntent().getIntExtra("position_tab", 0);
         Button button_OK = findViewById(R.id.button_OK);
-        button_OK.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("name", "" + name.getText().toString() + "");
-                intent.putExtra("score", "" + score.getText().toString());
-                intent.putExtra("finish_num", textView.getText().toString());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
-            }
+        button_OK.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("name", "" + name.getText().toString() + "");
+            intent.putExtra("score", "" + score.getText().toString());
+            intent.putExtra("finish_num", textView.getText().toString());
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         });
         ArrayList<Task> tasks = new DataBankTask().tasksInput(this, name_tab[position_tab]);
         class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
@@ -72,7 +75,9 @@ public class AddTaskActivity extends AppCompatActivity {
             }
 
             class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-                private TextView itemName, item_score, item_finsih;
+                private final TextView itemName;
+                private final TextView item_score;
+                private final TextView item_finsih;
 
                 public CustomViewHolder(@NonNull View itemView) {
                     super(itemView);

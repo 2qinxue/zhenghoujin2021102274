@@ -12,8 +12,5 @@ public class Ownitemgroup {
         return buttonname;
     }
 
-    public int Get_id() {
-        return button_position;
-    }
 }
 

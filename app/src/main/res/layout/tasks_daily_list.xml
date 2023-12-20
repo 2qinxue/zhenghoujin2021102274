@@ -12,19 +12,22 @@
         android:layout_marginTop="20dp"
 
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="39dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="" />
+            android:text=""
+            tools:ignore="VisualLintButtonSize" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="329dp"
             android:layout_height="59dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            tools:ignore="TextSizeCheck">
 
             <TextView
                 android:id="@+id/textView_daily_task_name"
@@ -37,7 +40,8 @@
                 app:layout_constraintHorizontal_bias="0.157"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.238" />
+                app:layout_constraintVertical_bias="0.238"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/textView_daily_score"
@@ -50,7 +54,8 @@
                 app:layout_constraintHorizontal_bias="0.845"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.45" />
+                app:layout_constraintVertical_bias="0.45"
+                tools:ignore="HardcodedText,TextContrastCheck" />
 
             <TextView
                 android:id="@+id/textView_daily_finish"
@@ -63,7 +68,8 @@
                 app:layout_constraintHorizontal_bias="0.085"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_daily_task_name"
-                app:layout_constraintVertical_bias="0.416" />
+                app:layout_constraintVertical_bias="0.416"
+                tools:ignore="HardcodedText" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

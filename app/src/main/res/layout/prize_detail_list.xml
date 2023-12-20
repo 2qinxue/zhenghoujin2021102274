@@ -9,7 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="108dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:ignore="ObsoleteLayoutParam">
 
         <TextView
             android:id="@+id/textView_daily_prize_name"
@@ -22,7 +23,8 @@
             app:layout_constraintHorizontal_bias="0.157"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.238" />
+            app:layout_constraintVertical_bias="0.238"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textView_prize_score"
@@ -35,7 +37,8 @@
             app:layout_constraintHorizontal_bias="0.942"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.507" />
+            app:layout_constraintVertical_bias="0.507"
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <TextView
             android:id="@+id/textView_prize_finish"
@@ -48,17 +51,19 @@
             app:layout_constraintHorizontal_bias="0.085"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_daily_prize_name"
-            app:layout_constraintVertical_bias="0.416" />
+            app:layout_constraintVertical_bias="0.416"
+            tools:ignore="HardcodedText" />
 
         <ImageButton
             android:id="@+id/imageButton_label"
             android:layout_width="71dp"
             android:layout_height="59dp"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView_prize_score"
             app:layout_constraintStart_toEndOf="@+id/textView_daily_prize_name"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/btn_star_big_on"
-            android:background="@android:color/transparent" />
+            tools:ignore="ContentDescription,ImageContrastCheck,SpeakableTextPresentCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

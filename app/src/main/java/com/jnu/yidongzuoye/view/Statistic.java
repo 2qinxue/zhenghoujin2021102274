@@ -1,24 +1,23 @@
 package com.jnu.yidongzuoye.view;
 
 import static com.jnu.yidongzuoye.MainActivity.isAddTask;
-import static com.jnu.yidongzuoye.StatisticFragment.isRefresh;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+
 import com.jnu.yidongzuoye.R;
-import com.jnu.yidongzuoye.StatisticFragment;
 import com.jnu.yidongzuoye.data.Bill;
 import com.jnu.yidongzuoye.data.DataBankBill;
 
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -26,7 +25,6 @@ import java.util.concurrent.Future;
 public class Statistic extends View {
     ArrayList<Bill> bills_list;
 
-    private float averageValue=0; // 平均值
     String[][] xLabels = {{" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}, {" ", "周一", "周二", "周三", "周四", "周五", "周六", "周日"}
             , {" ", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"},
             {" ", "2017", "2018", "2019", "2020", "2021", "2022", "2023"}};
@@ -40,15 +38,12 @@ public class Statistic extends View {
     }
     private  void init() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<ArrayList<Bill>> future = executor.submit(new Callable<ArrayList<Bill>>() {
-            @Override
-            public ArrayList<Bill> call() throws Exception {
-                try {
-                    return new DataBankBill().billsInput(getContext());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return new ArrayList<>();
-                }
+        Future<ArrayList<Bill>> future = executor.submit(() -> {
+            try {
+                return new DataBankBill().billsInput(getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ArrayList<>();
             }
         });
 
@@ -61,8 +56,9 @@ public class Statistic extends View {
 
         executor.shutdown(); // 关闭 executor
     }
+    @SuppressLint("DrawAllocation")
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
         if(isAddTask)
@@ -117,8 +113,10 @@ public class Statistic extends View {
         linePaint.setColor(Color.BLUE);
         linePaint.setStrokeWidth(3);
 
+        // 平均值
+        float averageValue;
         if (position == 0) {
-            averageValue=0;
+            averageValue =0;
             // 绘制折线图
             if (bills_list.size() != 0) {
                 int count_comsumption = bills_list.size();
@@ -146,11 +144,11 @@ public class Statistic extends View {
                     }
                     pre_data = data;
                 }
-                on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
                 averageValue = averageValue /count_comsumption ;
             }
         } else if (position == 1) {
-            averageValue=0;
+            averageValue =0;
             // 绘制折线图
             if (bills_list.size() != 0) {
                 int[] arrayweekday = {0, 0, 0, 0, 0, 0, 0};
@@ -161,48 +159,56 @@ public class Statistic extends View {
                         averageValue += Double.parseDouble(bill.getBillScore().substring(1));
                     } else if(bill.getBillScore().charAt(0) == '-')
                         averageValue -= Double.parseDouble(bill.getBillScore().substring(1));
-                    if (bill.getBillTime().substring(20).equals("星期一")) {
-                        if (bill.getBillScore().charAt(0) == '+')
-                            averageValue_week[0] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[0] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[0] = 1;
-                    } else if (bill.getBillTime().substring(20).equals("星期二")) {
-                        if (bill.getBillScore().charAt(0) == '+')
-                            averageValue_week[1] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[1] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[1] = 1;
-                    } else if (bill.getBillTime().substring(20).equals("星期三")) {
-                        if (bill.getBillScore().charAt(0) == '+')
-                            averageValue_week[2] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[2] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[2] = 1;
-                    } else if (bill.getBillTime().substring(20).equals("星期四")) {
-                        if (bill.getBillScore().charAt(0) == '+')
-                            averageValue_week[3] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[3] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[3] = 1;
-                    } else if (bill.getBillTime().substring(20).equals("星期五")) {
-                        if (bill.getBillScore().charAt(0) == '+')
-                        averageValue_week[4] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[4] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[4] = 1;
-                    } else if (bill.getBillTime().substring(20).equals("星期六")) {
-                        if (bill.getBillScore().charAt(0) == '+')
-                            averageValue_week[5] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[5] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[5] = 1;
-                    } else {
-                        if (bill.getBillScore().charAt(0) == '+')
-                            averageValue_week[6] += Double.parseDouble(bill.getBillScore().substring(1));
-                        else
-                            averageValue_week[6] -= Double.parseDouble(bill.getBillScore().substring(1));
-                        arrayweekday[6] = 1;
+                    switch (bill.getBillTime().substring(20)) {
+                        case "星期一":
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[0] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[0] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[0] = 1;
+                            break;
+                        case "星期二":
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[1] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[1] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[1] = 1;
+                            break;
+                        case "星期三":
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[2] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[2] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[2] = 1;
+                            break;
+                        case "星期四":
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[3] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[3] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[3] = 1;
+                            break;
+                        case "星期五":
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[4] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[4] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[4] = 1;
+                            break;
+                        case "星期六":
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[5] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[5] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[5] = 1;
+                            break;
+                        default:
+                            if (bill.getBillScore().charAt(0) == '+')
+                                averageValue_week[6] += Double.parseDouble(bill.getBillScore().substring(1));
+                            else
+                                averageValue_week[6] -= Double.parseDouble(bill.getBillScore().substring(1));
+                            arrayweekday[6] = 1;
+                            break;
                     }
                 }
                 for (int i = 0; i < arrayweekday.length; i++) {
@@ -210,10 +216,11 @@ public class Statistic extends View {
                     count_comsumption += arrayweekday[i];
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
                     averageValue = averageValue / arrayweekday.length;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
                     double pre_data = 0;
+                    int pre_index = 0;
                     for (int i = 0, j = 0; i < arrayweekday.length; i++) {
                         if (arrayweekday[i] != 0) {
                             double data = averageValue_week[i];
@@ -226,22 +233,24 @@ public class Statistic extends View {
                                 data_temp = 0;
                                 color_t=Color.RED;
                             }
+
                             canvas.drawCircle(x, y, 10, linePaint); // 绘制数据点的圆圈
                             on_paint(canvas, String.valueOf(data), 30, color_t, x + 20, y - 20);
                             if (j > 0) {
-                                float prevX = xStart + i * xInterval;
+                                float prevX = xStart + pre_index * xInterval;
                                 float prevY = (float) (height - 60 - pre_data * yScale);
                                 canvas.drawLine(prevX, prevY, x, y, linePaint); // 绘制数据点之间的连线
                             }
                             pre_data = data_temp;
                             j++;
+                            pre_index = i+1;
                         }
                     }
                 }
             }
 
         } else if (position == 2) {
-            averageValue=0;
+            averageValue =0;
             // 绘制折线图
             if (bills_list.size() != 0) {
                 int[] arrayweekday = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -331,33 +340,39 @@ public class Statistic extends View {
                     count_comsumption += arrayweekday[i];
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
                     averageValue = averageValue / arrayweekday.length;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
                     double pre_data = 0;
+                    int pre_index = 0;
                     for (int i = 0, j = 0; i < arrayweekday.length; i++) {
                         if (arrayweekday[i] != 0) {
                             double data = averageValue_week[i];
                             float x = xStart + (i + 1) * xInterval;
                             float y = (float) (yStart - data * yScale);
-                            if(data<0)
-                                y=yStart;
+                            double data_temp =data;
+                            int color_t=Color.BLUE;
+                            if(data<0) {
+                                y = yStart;
+                                data_temp = 0;
+                                color_t=Color.RED;
+                            }
                             canvas.drawCircle(x, y, 10, linePaint); // 绘制数据点的圆圈
-                            on_paint(canvas, String.valueOf(data), 30, Color.BLUE, x + 20, y - 20);
+                            on_paint(canvas, String.valueOf(data), 30, color_t, x + 20, y - 20);
                             if (j > 0) {
-                                float prevX = xStart + i * xInterval;
+                                float prevX = xStart + pre_index * xInterval;
                                 float prevY = (float) (height - 60 - pre_data * yScale);
-                                pre_data = data;
                                 canvas.drawLine(prevX, prevY, x, y, linePaint); // 绘制数据点之间的连线
-                            } else
-                                pre_data = data;
+                            }
+                            pre_data = data_temp;
                             j++;
+                            pre_index = i+1;
                         }
                     }
                 }
             }
         } else {
-            averageValue=0;
+            averageValue =0;
             // 绘制折线图
             if (bills_list.size() != 0) {
                 int[] arrayweekday = {0, 0, 0, 0, 0, 0, 0};
@@ -417,10 +432,11 @@ public class Statistic extends View {
                     count_comsumption += arrayweekday[i];
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"结余:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
                     averageValue = averageValue / arrayweekday.length;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
                     double pre_data = 0;
+                    int pre_index = 0;
                     for (int i = 0, j = 0; i < arrayweekday.length; i++) {
                         if (arrayweekday[i] != 0) {
                             double data = averageValue_week[i];
@@ -431,13 +447,13 @@ public class Statistic extends View {
                             canvas.drawCircle(x, y, 10, linePaint); // 绘制数据点的圆圈
                             on_paint(canvas, String.valueOf(data), 30, Color.BLUE, x + 20, y - 20);
                             if (j > 0) {
-                                float prevX = xStart + i* xInterval;
+                                float prevX = xStart + pre_index* xInterval;
                                 float prevY = (float) (height - 60 - pre_data * yScale);
-                                pre_data = data;
                                 canvas.drawLine(prevX, prevY, x, y, linePaint); // 绘制数据点之间的连线
-                            } else
-                                pre_data = data;
+                            }
+                            pre_data = data;
                             j++;
+                            pre_index = i+1;
                         }
                     }
 
@@ -445,7 +461,7 @@ public class Statistic extends View {
             }
         }
 
-        Paint yLabelPaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint yLabelPaint = new Paint();
         yLabelPaint.setColor(Color.RED);
         yLabelPaint.setTextSize(30);
         for (int i = 0; i < yTickCount; i++) {
@@ -459,7 +475,7 @@ public class Statistic extends View {
         }
 
         // 绘制坐标轴x和y
-        Paint axisPaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint axisPaint = new Paint();
         axisPaint.setColor(Color.BLACK);
         axisPaint.setStrokeWidth(5);
         // 绘制x轴
@@ -467,7 +483,7 @@ public class Statistic extends View {
         // 绘制y轴
         canvas.drawLine(xStart, yEnd, xStart, yStart + 40, axisPaint);
         //label
-        on_paint(canvas, text_[position]+"平均:" + averageValue, 60, R.color.purple_200, width - 600, 70);
+        on_paint(canvas, text_[position]+"平均:" + averageValue, 45, R.color.purple_200, width - 600, 70);
 
         invalidate();
     }

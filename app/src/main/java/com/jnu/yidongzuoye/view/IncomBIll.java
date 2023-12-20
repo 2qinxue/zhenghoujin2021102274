@@ -1,28 +1,28 @@
 package com.jnu.yidongzuoye.view;
 
 import static com.jnu.yidongzuoye.MainActivity.isAddTask;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
-import com.jnu.yidongzuoye.R;
 
+import androidx.annotation.NonNull;
+
+import com.jnu.yidongzuoye.R;
 import com.jnu.yidongzuoye.data.Bill;
 import com.jnu.yidongzuoye.data.DataBankBill;
+
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class IncomBIll extends View {
-
-    private float averageValue; // 平均值
     public static int currentImcomposition;
 
     ArrayList<Bill> bills_list;
@@ -32,15 +32,12 @@ public class IncomBIll extends View {
     String []text_={" ","周","月","年"};
     private  void init() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<ArrayList<Bill>> future = executor.submit(new Callable<ArrayList<Bill>>() {
-            @Override
-            public ArrayList<Bill> call() throws Exception {
-                try {
-                    return new DataBankBill().billsInput(getContext());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return new ArrayList<>();
-                }
+        Future<ArrayList<Bill>> future = executor.submit(() -> {
+            try {
+                return new DataBankBill().billsInput(getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ArrayList<>();
             }
         });
 
@@ -58,8 +55,9 @@ public class IncomBIll extends View {
         init();
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
         if(isAddTask)
@@ -70,7 +68,7 @@ public class IncomBIll extends View {
         int width = getWidth();
         int height = getHeight();
         // 绘制矩形背景
-        Paint backgroundPaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint backgroundPaint = new Paint();
         backgroundPaint.setColor("#00FF00".hashCode());
         canvas.drawRect(0, 0, width, height, backgroundPaint);
 
@@ -81,11 +79,11 @@ public class IncomBIll extends View {
         int xEnd = width - 100; // x轴结束位置
         int xInterval = (xEnd - xStart) / (xTickCount - 1); // x轴刻度间隔
 
-        Paint xTickPaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint xTickPaint = new Paint();
         xTickPaint.setColor(Color.BLACK);
         xTickPaint.setStrokeWidth(2);
 
-        Paint xLabelPaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint xLabelPaint = new Paint();
         xLabelPaint.setColor(Color.BLACK);
         xLabelPaint.setTextSize(30);
 
@@ -106,20 +104,22 @@ public class IncomBIll extends View {
         int yInterval = (yStart - yEnd) / (yTickCount - 1); // y轴刻度间隔
         int yMax = 200; // y轴最大值
 
-        Paint yTickPaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint yTickPaint = new Paint();
         yTickPaint.setColor(Color.BLACK);
         yTickPaint.setStrokeWidth(1);
 
-        Paint linePaint = new Paint();
+        @SuppressLint("DrawAllocation") Paint linePaint = new Paint();
         linePaint.setColor(Color.BLUE);
         linePaint.setStrokeWidth(3);
 
+        // 平均值
+        float averageValue;
         if (position == 0) {
-            averageValue=0;
+            averageValue =0;
             // 绘制折线图
             if (bills_list.size() != 0) {
 
-                ArrayList<Bill> bill_temp = new ArrayList<>();
+                @SuppressLint("DrawAllocation") ArrayList<Bill> bill_temp = new ArrayList<>();
                 int count_comsumption = 0;
                 for (Bill bill : bills_list) {
                     if (bill.getBillScore().charAt(0) == '+') {
@@ -129,7 +129,7 @@ public class IncomBIll extends View {
                     }
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
                     averageValue = averageValue / count_comsumption;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
                     double pre_data = 0;
@@ -151,7 +151,7 @@ public class IncomBIll extends View {
                 }
             }
         } else if (position == 1) {
-            averageValue=0;
+            averageValue =0;
 
             // 绘制折线图
             if (bills_list.size() != 0) {
@@ -160,27 +160,35 @@ public class IncomBIll extends View {
                 int count_comsumption = 0;
                 for (Bill bill : bills_list) {
                     if (bill.getBillScore().charAt(0) == '+') {
-                        if (bill.getBillTime().substring(20).equals("星期一")) {
-                            averageValue_week[0] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[0] = 1;
-                        } else if (bill.getBillTime().substring(20).equals("星期二")) {
-                            averageValue_week[1] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[1] = 1;
-                        } else if (bill.getBillTime().substring(20).equals("星期三")) {
-                            averageValue_week[2] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[2] = 1;
-                        } else if (bill.getBillTime().substring(20).equals("星期四")) {
-                            averageValue_week[3] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[3] = 1;
-                        } else if (bill.getBillTime().substring(20).equals("星期五")) {
-                            averageValue_week[4] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[4] = 1;
-                        } else if (bill.getBillTime().substring(20).equals("星期六")) {
-                            averageValue_week[5] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[5] = 1;
-                        } else if(bill.getBillTime().substring(20).equals("星期日")) {
-                            averageValue_week[6] += Double.parseDouble(bill.getBillScore().substring(1));
-                            arrayweekday[6] = 1;
+                        switch (bill.getBillTime().substring(20)) {
+                            case "星期一":
+                                averageValue_week[0] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[0] = 1;
+                                break;
+                            case "星期二":
+                                averageValue_week[1] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[1] = 1;
+                                break;
+                            case "星期三":
+                                averageValue_week[2] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[2] = 1;
+                                break;
+                            case "星期四":
+                                averageValue_week[3] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[3] = 1;
+                                break;
+                            case "星期五":
+                                averageValue_week[4] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[4] = 1;
+                                break;
+                            case "星期六":
+                                averageValue_week[5] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[5] = 1;
+                                break;
+                            case "星期日":
+                                averageValue_week[6] += Double.parseDouble(bill.getBillScore().substring(1));
+                                arrayweekday[6] = 1;
+                                break;
                         }
                         averageValue += Double.parseDouble(bill.getBillScore().substring(1));
                     }
@@ -190,7 +198,7 @@ public class IncomBIll extends View {
                     count_comsumption+=arrayweekday[i];
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
 
                     averageValue = averageValue / arrayweekday.length;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
@@ -217,19 +225,17 @@ public class IncomBIll extends View {
             }
 
         } else if (position == 2) {
-            averageValue=0;
+            averageValue =0;
 
             // 绘制折线图
             if (bills_list.size() != 0) {
                 int[] arrayweekday = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
                 double[] averageValue_week = new double[12];
-                ArrayList<Bill> bill_temp = new ArrayList<>();
                 int count_comsumption = 0;
                 for (Bill bill : bills_list) {
                     if (bill.getBillScore().charAt(0) == '+') {
-                        bill_temp.add(bill);
                         averageValue += Double.parseDouble(bill.getBillScore().substring(1));
-                        if (bill.getBillTime().startsWith("01", 5)) {
+                        if (bill.getBillTime().startsWith("01",5)) {
                             averageValue_week[0] += Double.parseDouble(bill.getBillScore().substring(1));
                             arrayweekday[0] = 1;
                         } else if (bill.getBillTime().startsWith("02", 5)) {
@@ -273,7 +279,7 @@ public class IncomBIll extends View {
                     count_comsumption+=arrayweekday[i];
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
 
                     averageValue = averageValue / arrayweekday.length;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
@@ -300,15 +306,13 @@ public class IncomBIll extends View {
             }
         } else {
             // 绘制折线图
-            averageValue=0;
+            averageValue =0;
             if (bills_list.size() != 0) {
                 int[] arrayweekday = {0, 0, 0, 0, 0, 0, 0};
                 double[] averageValue_week = new double[7];
-                ArrayList<Bill> bill_temp = new ArrayList<>();
                 int count_comsumption = 0;
                 for (Bill bill : bills_list) {
                     if (bill.getBillScore().charAt(0) == '+') {
-                        bill_temp.add(bill);
                         averageValue += Double.parseDouble(bill.getBillScore().substring(1));
                         if (bill.getBillTime().startsWith("2017")) {
                             averageValue_week[0] += Double.parseDouble(bill.getBillScore().substring(1));
@@ -339,7 +343,7 @@ public class IncomBIll extends View {
                     count_comsumption += arrayweekday[i];
                 }
                 if (count_comsumption != 0) {
-                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 60, R.color.purple_200, 100, 70);
+                    on_paint(canvas, text_[position]+"收入:"+new Formatter().format("%.2f", averageValue), 45, R.color.purple_200, 100, 70);
                     averageValue = averageValue / arrayweekday.length;
                     float yScale = (yStart+0.0f - yEnd) / yMax; // y轴上的比例尺
                     double pre_data = 0;
@@ -390,7 +394,7 @@ public class IncomBIll extends View {
         canvas.drawLine(xStart, yEnd, xStart, yStart + 40, axisPaint);
         //label
 
-        on_paint(canvas, text_[position]+"平均收入:" + averageValue, 60, R.color.purple_200, width - 600, 70);
+        on_paint(canvas, text_[position]+"平均收入:" + averageValue, 45, R.color.purple_200, width - 600, 70);
 
         invalidate();
 

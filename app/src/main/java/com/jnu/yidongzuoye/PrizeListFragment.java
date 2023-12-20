@@ -1,28 +1,30 @@
 package com.jnu.yidongzuoye;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static com.jnu.yidongzuoye.MainActivity.allBills;
 import static com.jnu.yidongzuoye.data.DataBankPrize.PRIZE_DATA_FILE_NAME;
 import static com.jnu.yidongzuoye.data.DataBankPrize.PRIZE_STORE_DATA_FILE_NAME;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.jnu.yidongzuoye.data.Bill;
 import com.jnu.yidongzuoye.data.DataBankBill;
 import com.jnu.yidongzuoye.data.DataBankPrize;
@@ -31,7 +33,6 @@ import com.jnu.yidongzuoye.prizedata.AddPrizeActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
@@ -71,12 +72,12 @@ public class PrizeListFragment extends Fragment {
         try {
             prizes_store.add(new Prize("游戏30分钟", "-30", "0/30"));
             prizes_store.add(new Prize("看电视30分钟）", "-100", "0/100"));
-            prizes_store.add(new Prize("Keep 课程一次", "-120", "0/120"));
-            prizes_store.add(new Prize("深蹲一套 ", "-2", "0/1"));
-            prizes_store.add(new Prize("学习视频30分钟", "-30", "0/30"));
-            prizes_store.add(new Prize("早睡", "-5", "0/1"));
-            prizes_store.add(new Prize("背10个单词", "-10", "0/10"));
-            prizes_store.add(new Prize("跑步30分钟", "-30", "0/30"));
+            prizes_store.add(new Prize("熬夜看剧", "-120", "0/120"));
+            prizes_store.add(new Prize("吃麻辣烫", "-20", "0/1"));
+            prizes_store.add(new Prize("看小说30分钟", "-30", "0/30"));
+            prizes_store.add(new Prize("出去喝酒", "-5", "0/1"));
+            prizes_store.add(new Prize("打牌", "-10", "0/10"));
+            prizes_store.add(new Prize("旅游", "-30", "0/30"));
             new DataBankPrize().savePrizes(requireActivity(), prizes_store, PRIZE_STORE_DATA_FILE_NAME);
             prizes = new DataBankPrize().prizesInput(requireActivity(), PRIZE_DATA_FILE_NAME);
         } catch (Exception e) {
@@ -141,34 +142,28 @@ public class PrizeListFragment extends Fragment {
                 menu.add(0, 1, this.getAdapterPosition(), "完成" + this.getAdapterPosition());
                 menu.add(0, 2, this.getAdapterPosition(), "新建奖励" + this.getAdapterPosition());
                 menu.add(0, 3, this.getAdapterPosition(), "添加标签" + this.getAdapterPosition());
-                menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                        builder.setTitle("删除");
-                        builder.setMessage("确定删除？");
-                        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adapter.removeItem(item.getOrder());
-                                new DataBankPrize().savePrizes(requireActivity(), prizes, PRIZE_DATA_FILE_NAME);
-                                Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        builder.show();
-                        return true;
-                    }
+                menu.getItem(0).setOnMenuItemClickListener(item -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle("删除");
+                    builder.setMessage("确定删除？");
+                    builder.setPositiveButton("yes", (dialog, which) -> {
+                        adapter.removeItem(item.getOrder());
+                        new DataBankPrize().savePrizes(requireActivity(), prizes, PRIZE_DATA_FILE_NAME);
+                        Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                    });
+                    builder.setNegativeButton("no", (dialog, which) -> {
+                    });
+                    builder.show();
+                    return true;
                 });
-                menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
+                menu.getItem(1).setOnMenuItemClickListener(item -> {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle("满足奖励");
+                    builder.setMessage("确认花费"+prizes.get(item.getOrder()).getScore()+"成就点来满足你的奖励？");
+                    builder.setPositiveButton("yes", (dialog, which) -> {
                         Date now = new Date();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String formattedDate = format.format(now);
                         // 获取中文星期几
                         SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
@@ -184,24 +179,21 @@ public class PrizeListFragment extends Fragment {
                         new DataBankBill().saveBills(requireActivity(), allBills);
                         adapter.removeItem(item.getOrder());
                         new DataBankPrize().savePrizes(requireActivity(), prizes, PRIZE_DATA_FILE_NAME);
-                        return true;
-                    }
+                    });
+                    builder.setNegativeButton("no",null);
+                    builder.create();
+                    builder.show();
+                    return true;
                 });
-                menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        Intent intent = new Intent(requireActivity(),
-                                AddPrizeActivity.class);
-                        itemLauncher_prize.launch(intent);
-                        return true;
-                    }
+                menu.getItem(2).setOnMenuItemClickListener(item -> {
+                    Intent intent = new Intent(requireActivity(),
+                            AddPrizeActivity.class);
+                    itemLauncher_prize.launch(intent);
+                    return true;
                 });
-                menu.getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(@NonNull MenuItem item) {
-                        label_button.setVisibility(View.VISIBLE);
-                        return true;
-                    }
+                menu.getItem(3).setOnMenuItemClickListener(item -> {
+                    label_button.setVisibility(View.VISIBLE);
+                    return true;
                 });
             }
         }
@@ -219,25 +211,12 @@ public class PrizeListFragment extends Fragment {
             holder.prize_name.setText(prize_item.get(position).getPrizeName());
             holder.prizes_score.setText(prize_item.get(position).getScore());
             holder.num.setText(prize_item.get(position).getNum());
-            holder.label_button.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                    builder.setTitle("撤销标签？");
-                    builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            holder.label_button.setVisibility(View.GONE);
-                        }
-                    });
-                    builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {}
-                    });
-                    builder.show();
-                }
+            holder.label_button.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle("撤销标签？");
+                builder.setPositiveButton("yes", (dialog, which) -> holder.label_button.setVisibility(View.GONE));
+                builder.setNegativeButton("no", (dialog, which) -> {});
+                builder.show();
             });
         }
         @Override

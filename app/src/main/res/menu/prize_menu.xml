@@ -1,6 +1,5 @@
 
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/context_prize"
     android:icon="@drawable/ic_add"
     xmlns:android="http://schemas.android.com/apk/res/android"

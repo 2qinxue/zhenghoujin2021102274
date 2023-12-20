@@ -21,9 +21,6 @@ public class Prize implements Serializable {
         this.Score = Score;
         this.Num = Num;
     }
-    public void setPrizeName(String newTaskName) {
-        this.PrizeName = newTaskName;
-    }
 
     public void setScore(String newTaskScore) {
         this.Score = newTaskScore;

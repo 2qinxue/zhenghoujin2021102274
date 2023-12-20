@@ -22,7 +22,8 @@
             app:layout_constraintHorizontal_bias="0.021"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="ContentDescription,VisualLintBounds" />
 
         <TextView
             android:id="@+id/textView7"
@@ -36,7 +37,8 @@
             app:layout_constraintHorizontal_bias="0.092"
             app:layout_constraintStart_toEndOf="@+id/moneyImageView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.195" />
+            app:layout_constraintVertical_bias="0.195"
+            tools:ignore="HardcodedText,TextContrastCheck,TextSizeCheck" />
 
         <TextView
             android:id="@+id/textView_yue"
@@ -50,20 +52,22 @@
             app:layout_constraintHorizontal_bias="0.483"
             app:layout_constraintStart_toEndOf="@+id/moneyImageView"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
-            app:layout_constraintVertical_bias="0.305" />
+            app:layout_constraintVertical_bias="0.305"
+            tools:ignore="HardcodedText,TextContrastCheck,TextSizeCheck" />
 
         <Button
             android:id="@+id/button_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:text="提现"
             android:textColor="@color/teal_200"
             android:textSize="20dp"
-            android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/moneyImageView"
-            app:layout_constraintTop_toBottomOf="@+id/textView_yue" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_yue"
+            tools:ignore="HardcodedText,SpUsage,TextSizeCheck,TextContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

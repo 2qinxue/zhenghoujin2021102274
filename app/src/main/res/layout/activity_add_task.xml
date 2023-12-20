@@ -15,7 +15,8 @@
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.992" />
+        app:layout_constraintVertical_bias="0.992"
+        tools:ignore="VisualLintOverlap" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -35,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="InvalidId" />
+            tools:ignore="InvalidId,TextSizeCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,9 +53,10 @@
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.453">
 
             <EditText
                 android:id="@+id/edittextView_daily_task_name"
@@ -65,7 +67,8 @@
                 app:layout_constraintHorizontal_bias="0.227"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.142" />
+                app:layout_constraintVertical_bias="0.142"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck,TextFields" />
 
             <EditText
                 android:id="@+id/edittextView_daily_score"
@@ -78,7 +81,8 @@
                 app:layout_constraintHorizontal_bias="0.95"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.493" />
+                app:layout_constraintVertical_bias="0.493"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck,TextFields" />
 
             <EditText
                 android:id="@+id/edittext_daily_finish"
@@ -89,41 +93,49 @@
                 app:layout_constraintHorizontal_bias="0.224"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edittextView_daily_task_name"
-                app:layout_constraintVertical_bias="0.304" />
+                app:layout_constraintVertical_bias="0.304"
+                tools:ignore="LabelFor,SpeakableTextPresentCheck,TextFields,TouchTargetSizeCheck"
+                android:importantForAutofill="no" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="49dp"
                 android:layout_height="38dp"
                 android:text="score:"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/edittextView_daily_score"
                 app:layout_constraintHorizontal_bias="0.836"
                 app:layout_constraintStart_toEndOf="@+id/edittextView_daily_task_name"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.56" />
+                app:layout_constraintVertical_bias="0.56"
+                tools:ignore="HardcodedText,TextSizeCheck" />
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="55dp"
                 android:layout_height="44dp"
                 android:text="name:"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/edittextView_daily_task_name"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.141" />
+                app:layout_constraintVertical_bias="0.141"
+                tools:ignore="HardcodedText,TextSizeCheck,TextSizeCheck" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="45dp"
                 android:layout_height="36dp"
                 android:text="Progress:"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView_daily_finish"
+                app:layout_constraintEnd_toStartOf="@+id/edittext_daily_finish"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                tools:ignore="HardcodedText,TextSizeCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

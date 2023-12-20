@@ -5,12 +5,19 @@ import static com.jnu.yidongzuoye.MainActivity.allBills;
 import static com.jnu.yidongzuoye.data.DataBankTask.DAILY_TASK_DATA_FILE_NAME;
 import static com.jnu.yidongzuoye.data.DataBankTask.DAILY_TASK_STORE_FILENAME;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -18,17 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.jnu.yidongzuoye.MainActivity;
 import com.jnu.yidongzuoye.R;
 import com.jnu.yidongzuoye.data.Bill;
 import com.jnu.yidongzuoye.data.DataBankBill;
@@ -37,35 +33,27 @@ import com.jnu.yidongzuoye.data.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
 public class dailyFragment extends Fragment {
-    private int parentPosition;
-    private int childPosition;
     public static ActivityResultLauncher<Intent> itemLauncher;
-    private ArrayList<Task> tasks_store = new ArrayList<>();
+    private final ArrayList<Task> tasks_store = new ArrayList<>();
     private static ArrayList<Task> tasks = new ArrayList<>();
     private static DailyCustomAdapter adapter;
     public dailyFragment() {
 
     }
-    public static dailyFragment newInstance(int parentPosition, int childPosition) {
+    public static dailyFragment newInstance() {
         dailyFragment fragment = new dailyFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
-        fragment.parentPosition = parentPosition;
-        fragment.childPosition = childPosition;
         return fragment;
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,10 +92,12 @@ public class dailyFragment extends Fragment {
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
+                        assert data != null;
                         String name = data.getStringExtra("name");
-                        Double score_;
+                        double score_;
                         String score_text = data.getStringExtra("score");
                         try {
+                            assert score_text != null;
                             score_ = Double.parseDouble(score_text);// 输入的数据是 double 类型
                         } catch (NumberFormatException e) {
                             score_ = 0.0;   // 输入的数据不是 double 类型
@@ -124,7 +114,7 @@ public class dailyFragment extends Fragment {
         return rootView;
     }
     public class DailyCustomAdapter extends  RecyclerView.Adapter<DailyCustomAdapter.ViewHolder>{
-        private ArrayList<Task> task_item;
+        private final ArrayList<Task> task_item;
 
         public void removeItem(int position) {
             task_item.remove(position);
@@ -132,10 +122,10 @@ public class dailyFragment extends Fragment {
         }//删除books
         public class ViewHolder extends RecyclerView.ViewHolder
                 implements View.OnCreateContextMenuListener {
-            private CheckBox checkBox;
-            private TextView task_name;
-            private  TextView tasks_score;
-            private TextView num;
+            private final CheckBox checkBox;
+            private final TextView task_name;
+            private final TextView tasks_score;
+            private final TextView num;
             public ViewHolder(View task_item_view) {
                 super(task_item_view);
                 this.task_name = task_item_view.findViewById(R.id.textView_daily_task_name);
@@ -144,31 +134,28 @@ public class dailyFragment extends Fragment {
                 this.checkBox = task_item_view.findViewById(R.id.checkBox);
                 this.checkBox.setChecked(false);
 
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            try {
-                                allBills = new DataBankBill().billsInput(requireActivity());
-                            }
-                            catch (Exception e){
-                                allBills = new ArrayList<>();
-                            }
-                            Date now = new Date();
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String formattedDate = format.format(now);
-                            // 获取中文星期几
-                            SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
-                            String dayOfWeek = weekFormat.format(now);
-                            allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), formattedDate+" "+ dayOfWeek));
-                            new DataBankBill().saveBills(requireActivity(), allBills);
-                            int position = (int) buttonView.getTag(); // 获取位置信息
-                            // 其他逻辑处理...
-                            adapter.removeItem(position);
-                            new DataBankTask().saveTasks(requireActivity(), tasks, DAILY_TASK_DATA_FILE_NAME);
-                        } else {
-                            buttonView.setChecked(false);
+                checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        try {
+                            allBills = new DataBankBill().billsInput(requireActivity());
                         }
+                        catch (Exception e){
+                            allBills = new ArrayList<>();
+                        }
+                        Date now = new Date();
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = format.format(now);
+                        // 获取中文星期几
+                        SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                        String dayOfWeek = weekFormat.format(now);
+                        allBills.add(new Bill((String) task_name.getText(), (String) tasks_score.getText(), formattedDate+" "+ dayOfWeek));
+                        new DataBankBill().saveBills(requireActivity(), allBills);
+                        int position = (int) buttonView.getTag(); // 获取位置信息
+                        // 其他逻辑处理...
+                        adapter.removeItem(position);
+                        new DataBankTask().saveTasks(requireActivity(), tasks, DAILY_TASK_DATA_FILE_NAME);
+                    } else {
+                        buttonView.setChecked(false);
                     }
                 });
                 task_item_view.setOnCreateContextMenuListener(this);
@@ -178,62 +165,47 @@ public class dailyFragment extends Fragment {
                 menu.add(0,0,this.getAdapterPosition(),"删除"+this.getAdapterPosition());
                 menu.add(0,1,this.getAdapterPosition(),"完成"+this.getAdapterPosition());
                 menu.add(0,2,this.getAdapterPosition(),"新建"+this.getAdapterPosition());
-                menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                        builder.setTitle("删除");
-                        builder.setMessage("确定删除？");
-                        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adapter.removeItem(item.getOrder());
-                                new DataBankTask().saveTasks(requireActivity(), tasks, DAILY_TASK_DATA_FILE_NAME);
-
-                                Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        builder.show();
-                        return true;
-                        }
-                });
-                menu.getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        Date now = new Date();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String formattedDate = format.format(now);
-                        // 获取中文星期几
-                        SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
-                        String dayOfWeek = weekFormat.format(now);
-                        try {
-                            allBills = new DataBankBill().billsInput(requireActivity());
-                        }
-                        catch (Exception e){
-                            allBills = new ArrayList<>();
-                        }
-                        allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), formattedDate+" "+dayOfWeek));
-                        new DataBankBill().saveBills(requireActivity(), allBills);
+                menu.getItem(0).setOnMenuItemClickListener(item -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle("删除");
+                    builder.setMessage("确定删除？");
+                    builder.setPositiveButton("yes", (dialog, which) -> {
                         adapter.removeItem(item.getOrder());
                         new DataBankTask().saveTasks(requireActivity(), tasks, DAILY_TASK_DATA_FILE_NAME);
-                        return true;
+
+                        Toast.makeText(getContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                    });
+                    builder.setNegativeButton("no", (dialog, which) -> {
+                    });
+                    builder.show();
+                    return true;
+                    });
+                menu.getItem(1).setOnMenuItemClickListener(item -> {
+
+                    Date now = new Date();
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = format.format(now);
+                    // 获取中文星期几
+                    SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+                    String dayOfWeek = weekFormat.format(now);
+                    try {
+                        allBills = new DataBankBill().billsInput(requireActivity());
                     }
+                    catch (Exception e){
+                        allBills = new ArrayList<>();
+                    }
+                    allBills.add(new Bill(tasks.get(item.getOrder()).getTaskName(), tasks.get(item.getOrder()).getScore(), formattedDate+" "+dayOfWeek));
+                    new DataBankBill().saveBills(requireActivity(), allBills);
+                    adapter.removeItem(item.getOrder());
+                    new DataBankTask().saveTasks(requireActivity(), tasks, DAILY_TASK_DATA_FILE_NAME);
+                    return true;
                 });
-                menu.getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Intent intent = new Intent(requireActivity(),
-                                AddTaskActivity.class);
-                        intent.putExtra("position_tab",0);
-                        itemLauncher.launch(intent);
-                        return true;
-                    }
+                menu.getItem(2).setOnMenuItemClickListener(item -> {
+                    Intent intent = new Intent(requireActivity(),
+                            AddTaskActivity.class);
+                    intent.putExtra("position_tab",0);
+                    itemLauncher.launch(intent);
+                    return true;
                 });
             }
 
@@ -249,6 +221,7 @@ public class dailyFragment extends Fragment {
             task_item = dataSet;
         }
 
+        @NonNull
         public DailyCustomAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             View view = LayoutInflater.from(viewGroup.getContext()).
                     inflate(R.layout.tasks_daily_list, viewGroup, false);
@@ -274,8 +247,9 @@ public class dailyFragment extends Fragment {
             return Integer.compare((int) Double.parseDouble(task1.getScore().substring(1)),(int)Double.parseDouble(task2.getScore().substring(1)));
         }
     }
+    @SuppressLint("NotifyDataSetChanged")
     public static void Sort_daily_task(){
-        Collections.sort(tasks, new TaskComparator());
+        tasks.sort(new TaskComparator());
         adapter.notifyDataSetChanged(); // 通知适配器数据发生了变化
     }
 }

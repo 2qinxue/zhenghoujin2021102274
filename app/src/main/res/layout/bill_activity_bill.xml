@@ -32,7 +32,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="onPreviousButtonClick"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_media_previous" />
+                android:src="@android:drawable/ic_media_previous"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/monthText"
@@ -42,7 +43,8 @@
                 android:gravity="center"
                 android:text="一月"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="HardcodedText,InefficientWeight" />
 
             <ImageButton
                 android:id="@+id/nextButton"
@@ -51,7 +53,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:onClick="onNextButtonClick"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_media_next" />
+                android:src="@android:drawable/ic_media_next"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -61,7 +64,8 @@
             android:layout_height="wrap_content"
             android:text="0000-00-00"
             android:textColor="@color/red"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            tools:ignore="HardcodedText,SpUsage,TextSizeCheck" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/billviewPager"

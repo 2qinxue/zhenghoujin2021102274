@@ -14,4 +14,9 @@
     <string name="achievement">耗费成就点数</string>
     <string name="Add_label">添加标签</string>
     <string name="sort_prize">奖励排序</string>
+    <string name="consumption">消耗成就点数：</string>
+    <string name="left_consumption_point">剩余成就点数：</string>
+    <string name="zero">0</string>
+    <string name="zreo_0">0</string>
+    <string name="score_add">score:</string>
 </resources>

@@ -3,7 +3,6 @@ package com.jnu.yidongzuoye.data;
 import android.content.Context;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 public class DataBankPrize {
     public static String PRIZE_DATA_FILE_NAME="prize.data";
     public static String PRIZE_STORE_DATA_FILE_NAME="prize_store.data";
-    ArrayList<Prize> prize=new ArrayList<Prize>();
+    ArrayList<Prize> prize= new ArrayList<>();
     public ArrayList<Prize> prizesInput(Context context, String filename) {
         try
         {
@@ -37,8 +36,6 @@ public class DataBankPrize {
             objectOutputStream.writeObject(prizeDate);
             objectOutputStream.close();
             fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

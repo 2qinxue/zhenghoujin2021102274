@@ -9,6 +9,7 @@ android {
     defaultConfig {
         applicationId = "com.jnu.yidongzuoye"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -41,4 +42,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha02")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha02")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0-alpha02")
+//    implementation("androidx.test:monitor:1.6.1")
+    implementation ("androidx.tracing:tracing:1.2.0")
+
 }

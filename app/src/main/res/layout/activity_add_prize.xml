@@ -14,7 +14,8 @@
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.992" />
+        app:layout_constraintVertical_bias="0.992"
+        tools:ignore="VisualLintOverlap" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -34,11 +35,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="InvalidId" />
+            tools:ignore="InvalidId,TextSizeCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="486dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,20 +52,22 @@
             android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.45">
 
             <EditText
                 android:id="@+id/edittextView_daily_prize_name1"
                 android:layout_width="153dp"
-                android:layout_height="47dp"
+                android:layout_height="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.328"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.195" />
+                app:layout_constraintVertical_bias="0.195"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck,TextFields" />
 
             <EditText
                 android:id="@+id/edittextView_daily_score1"
@@ -75,51 +78,59 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.951"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck,TextFields" />
 
             <EditText
                 android:id="@+id/textView_daily_finish1"
                 android:layout_width="139dp"
-                android:layout_height="45dp"
+                android:layout_height="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.311"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edittextView_daily_prize_name1"
-                app:layout_constraintVertical_bias="0.238" />
+                app:layout_constraintVertical_bias="0.238"
+                tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck,TextFields" />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="52dp"
                 android:layout_height="47dp"
-                android:text="score:"
+                android:text="@string/score_add"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/edittextView_daily_score1"
                 app:layout_constraintHorizontal_bias="0.714"
                 app:layout_constraintStart_toEndOf="@+id/edittextView_daily_prize_name1"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextSizeCheck" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="52dp"
                 android:layout_height="41dp"
                 android:text="name:"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/edittextView_daily_prize_name1"
                 app:layout_constraintHorizontal_bias="0.592"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.179" />
+                app:layout_constraintVertical_bias="0.179"
+                tools:ignore="HardcodedText,TextSizeCheck" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="52dp"
                 android:layout_height="39dp"
                 android:text="progress:"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView_daily_finish1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                tools:ignore="HardcodedText,TextSizeCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

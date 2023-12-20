@@ -1,18 +1,7 @@
 package com.jnu.yidongzuoye;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-import com.jnu.yidongzuoye.data.Bill;
-import com.jnu.yidongzuoye.data.DataBankBill;
-import com.jnu.yidongzuoye.prizedata.AddPrizeActivity;
-import com.jnu.yidongzuoye.taskdata.AddTaskActivity;
-import com.jnu.yidongzuoye.taskdata.commonFragment;
-import com.jnu.yidongzuoye.taskdata.dailyFragment;
-import com.jnu.yidongzuoye.taskdata.instanceFragment;
-import com.jnu.yidongzuoye.taskdata.weeklyFragment;
-import com.jnu.yidongzuoye.bill_list.BillActivity;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,16 +12,30 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.jnu.yidongzuoye.bill_list.BillActivity;
+import com.jnu.yidongzuoye.data.Bill;
+import com.jnu.yidongzuoye.data.DataBankBill;
+import com.jnu.yidongzuoye.prizedata.AddPrizeActivity;
+import com.jnu.yidongzuoye.taskdata.AddTaskActivity;
+import com.jnu.yidongzuoye.taskdata.commonFragment;
+import com.jnu.yidongzuoye.taskdata.dailyFragment;
+import com.jnu.yidongzuoye.taskdata.instanceFragment;
+import com.jnu.yidongzuoye.taskdata.weeklyFragment;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static ArrayList<Bill> allBills = new ArrayList<>();
 
+    public static boolean isClosed = false;
 
     public static boolean isAddTask = false;
     public static String []TabList={"任务","奖励","统计","我"};
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (position == 2)
                 {
+                    MainActivity.isAddTask = true;
                     viewPager2.setUserInputEnabled(false);
                         // 调用子 Fragment 的方法进行滑动切换
                     Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("f2");
@@ -98,6 +102,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(isClosed) {
+            isClosed = false;
+            finish();
+        }
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         int currentTab = viewPager2.getCurrentItem(); // 获取当前选中的标签页索引
         if (currentTab == 0) {
@@ -106,9 +120,13 @@ public class MainActivity extends AppCompatActivity {
         } else if (currentTab == 1) {
             getMenuInflater().inflate(R.menu.prize_menu, menu);
             toolbar.setTitle("奖励列表");
-        } else {
+        } else if(currentTab == 2) {
             getMenuInflater().inflate(R.menu.common_menu, menu);
-            toolbar.setTitle("时间管理APP");
+            toolbar.setTitle("账单折线图");
+        }
+        else if(currentTab == 3) {
+            getMenuInflater().inflate(R.menu.common_menu, menu);
+            toolbar.setTitle("个人中心");
         }
         return true;
     }
@@ -186,10 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView totalmoney = dialogView.findViewById(R.id.textView6);
                 totalmoney.setText(total+"");
                 builder.setView(dialogView)
-                        .setNegativeButton("关闭", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
+                        .setNegativeButton("关闭", (dialog, which) -> {
                         })
                         .create()
                         .show();
@@ -213,15 +228,13 @@ public class MainActivity extends AppCompatActivity {
         public  Fragment createFragment(int position) {
             switch (position) {
                 case 0: {
-                    return TaskListFragment.newInstance(position);
+                    return TaskListFragment.newInstance();
                 }case 1:
                     return PrizeListFragment.newInstance(position);
                 case 2:
-                    return StatisticFragment.newInstance(position);
-                case 3:
-                    return new OwnFragment();
+                    return StatisticFragment.newInstance();
                 default:
-                    return null;
+                    return new OwnFragment();
             }
         }
         @Override

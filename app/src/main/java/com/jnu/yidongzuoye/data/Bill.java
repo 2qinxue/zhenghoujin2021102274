@@ -19,15 +19,5 @@ public class Bill implements Serializable {
         this.BillScore = BillScore;
         this.BillTime = BillTime;
     }
-    public void setBillName(String newBillName) {
-        this.BillName = newBillName;
-    }
 
-    public void setBillScore(String newBillScore) {
-        this.BillScore = newBillScore;
-    }
-
-    public void setBillTime(String newBillTime) {
-        this.BillTime = newBillTime;
-    }
 }

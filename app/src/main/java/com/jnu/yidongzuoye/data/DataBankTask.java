@@ -3,7 +3,6 @@ package com.jnu.yidongzuoye.data;
 import android.content.Context;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,13 +24,13 @@ public class DataBankTask {
 
     public static String DAILY_TASK_STORE_FILENAME="daily_tasks_store.data";
 
-    ArrayList<Task> tasks=new ArrayList<Task>();
+    ArrayList<Task> tasks= new ArrayList<>();
     public ArrayList<Task> tasksInput(Context context, String filename) {
         try
         {
             FileInputStream fileInputStream=context.openFileInput(filename);
             ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-            tasks= ( ArrayList<Task>)objectInputStream.readObject();
+            tasks= ( ArrayList<Task>) objectInputStream.readObject();
             objectInputStream.close();
             fileInputStream.close();
 
@@ -49,8 +48,6 @@ public class DataBankTask {
             objectOutputStream.writeObject(taskDate);
             objectOutputStream.close();
             fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

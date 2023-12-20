@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="账单"
-                android:textColor="@color/teal_200" />
+                android:textColor="#1DE9B6"
+                tools:ignore="HardcodedText" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.viewpager2.widget.ViewPager2
@@ -51,17 +52,20 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Monday" />
+                android:text="Monday"
+                tools:ignore="HardcodedText" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tuesday" />
+                android:text="Tuesday"
+                tools:ignore="HardcodedText" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wednesday" />
+                android:text="Wednesday"
+                tools:ignore="HardcodedText" />
         </com.google.android.material.tabs.TabLayout>
 
     </LinearLayout>
